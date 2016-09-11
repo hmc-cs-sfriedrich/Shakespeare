@@ -11,11 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var AppComponent = (function () {
     function AppComponent() {
+        this.lines = [];
     }
+    AppComponent.prototype.ngOnInit = function () {
+        this.lines.push("MALCOLM");
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: '<h1>My First Angular 2 App!</h1>'
+            template: "\n    <p>\n\t{{lines[0]}} <br>\n\tThis is the sergeant <br>\n    Who, like a good and hardy soldier, fought <br>\n    'Gainst my captivity.--Hail, brave friend! <br>\n    Say to the King the knowledge of the broil <br>\n    As thou didst leave it. <br><br>\n\n    CAPTAIN <br>\n\tDoubtful it stood, <br>\n    As two spent swimmers that do cling together <br>\n    And choke their art.The merciless Macdonwald <br>\n    (Worthy to be a rebel, for to that <br>\n    The multiplying villainies of nature <br>\n    Do swarm upon him) from the Western Isles <br>\n    Of kerns and gallowglasses is supplied; <br>\n    And Fortune, on his damned quarrel smiling, <br>\n    Showed like a rebel's whore. But all's too weak; <br>\n    For brave Macbeth(well he deserves that name), <br>\n    Disdaining Fortune, with his brandished steel, <br>\n    Which smoked with bloody execution, <br>\n    Like Valor's minion, carved out his passage <br>\n    Till he faced the slave; <br>\n    Which ne'er shook hands, nor bade farewell to him, <br>\n    Till he unseamed him from the nave to th' chops, <br>\n    And fixed his head upon our battlements. <br>\n    </p>\n    "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);
