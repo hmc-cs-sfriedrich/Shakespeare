@@ -1,13 +1,28 @@
 export class Line {
-    words: string[];
+    words: string;
     syllableCount: number;
     lineNumber: number;
 
-    countSyllables(): void{
-        //this.syllableCount = ;
+    constructor(words: string, lineNumber: number){
+        this.words = words;
+        this.syllableCount = -1;
+        this.lineNumber = lineNumber;
     }
 
-    getWords(): string[]{
+    countSyllables(): void{
+        // Basic syllable counting algorithm
+        let words = this.words.toLowerCase(); 
+        if(words.length <= 3) { 
+            this.syllableCount = 1; 
+        }
+
+        words = words.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+        words = words.replace(/^y/, '');
+        
+        this.syllableCount =  words.match(/[aeiouy]{1,2}/g).length;
+    }
+
+    getWords(): string{
         return this.words;
     }
 

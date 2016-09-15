@@ -2,7 +2,8 @@
 	<h1> A Shakespeare Website. </h1>
 	<p>
 	<span *ngFor="let line of lines">
-		{{line}} <br>
+		{{line.words}} <br>
+		Syllable count: {{line.syllableCount}} <br>
 	</span>
 	</p>
 </div>
