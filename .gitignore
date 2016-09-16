@@ -3,3 +3,6 @@ node_modules/
 
 # Generated typings file
 typings/
+
+# Debugging
+npm-debug.log
