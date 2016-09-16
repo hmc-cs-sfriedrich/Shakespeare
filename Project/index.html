@@ -22,12 +22,12 @@
     
   <div ng-controller="AppController" >
      <ul>
-        <li ng-repeat="guitar in dataSet">
+        <li ng-repeat="CD in dataSet">
            <div class="resultwrapper">
-               <h2>{{book.title}} {{book.author}}</h2>
-               <h3>First sold in {{book.year}}</h3>
-               <img ng-src="{{IMAGE_LOCATION + guitar.image}}" />
-               <p>{{guitar.desc}}</p>
+               <h2>{{CD.TITLE}} {{CD.AUTHOR}}</h2>
+               <h3>First sold in {{CD.YEAR}}</h3>
+               <img ng-src="{{IMAGE_LOCATION}}" />
+               <p>{{CD.COUNTRY}}</p>
                <a href="{{guitar.link}}" target="_blank">More info about the {{guitar.model}}...</a>
             </div>
         </li>
