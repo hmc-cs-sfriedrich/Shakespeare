@@ -5,7 +5,15 @@ export class Scene {
     speeches: Speech[];
     characters: String[];
     directions: StageDirections[];
+    actNumber: number;
     sceneNumber: number;
+    text: string;
+
+    constructor(act: number, scene: number, text: string){
+        this.actNumber = act;
+        this.sceneNumber = scene;
+        this.text = text;
+    }
 
     getSpeeches(): Speech[]{
         return this.speeches;
@@ -21,5 +29,9 @@ export class Scene {
 
     getSceneNumber(): number{
         return this.sceneNumber;
+    }
+
+    getActNumber(): number{
+        return this.actNumber;
     }
 }

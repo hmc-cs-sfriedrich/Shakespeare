@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Line } from './line';
+import { Dropdown } from './dropdown.component';
 
 @Component({
   selector: 'my-app',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		let line = new Line("This is the farewell", 1);
+		let line = new Line("I eat feet", 1);
 		line.countSyllables();
 		this.lines.push(line);
 	}
