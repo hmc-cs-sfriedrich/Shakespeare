@@ -10,13 +10,13 @@
 	<p id = scene-text>
 	<span *ngFor="let line of sceneToDisplay.lines">
 		{{line.words}}
-		<b *ngIf = highlightVowels> {{line.syllableCount}} </b> <br>
+		<b *ngIf = countSyllables> {{line.syllableCount}} </b> <br>
 	</span>
 	</p>
 </div>
 
 <div id = "features">
 	<label for = "highlight-vowels" class = "feature-checkbox-label">Count Syllables</label>
-	<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlightVowels()"/>
+	<input type = "checkbox" id = "highlight-vowels" (click)="toggleCountSyllables()"/>
 </div>
 </html>

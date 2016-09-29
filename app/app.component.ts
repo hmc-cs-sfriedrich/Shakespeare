@@ -12,6 +12,7 @@ import { Scene } from './scene';
 export class AppComponent implements OnInit {
 	lines: Line[];
 	highlightVowels: boolean;
+	countSyllables: boolean;
 	sceneToDisplay: Scene; 
 	scenes: Scene[];
 
@@ -67,7 +68,7 @@ export class AppComponent implements OnInit {
 
 	}
 
-	toggleHighlightVowels(): void {
-		this.highlightVowels = !this.highlightVowels;
+	toggleCountSyllables(): void {
+		this.countSyllables = !this.countSyllables;
 	}
 }
