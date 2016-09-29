@@ -1,14 +1,22 @@
+<html>
 <div id = "text">
 	<h1> A Shakespeare Website. </h1>
-	<dropdown></dropdown>
-	<p>
-	<span *ngFor="let line of lines">
-		{{line.words}} {{line.syllableCount}} <br>
+	<label id="features" for="dropdown"> Go to scene: </label>
+	<select [(ngModel)]="sceneToDisplay" ngChange="update(scene)" id="dropdown" required>
+		<option *ngFor = "let scene of scenes" [ngValue]="scene">
+			Act {{scene.actNumber}}, Scene {{scene.sceneNumber}}
+		</option>
+	</select>
+	<p id = scene-text>
+	<span *ngFor="let line of sceneToDisplay.lines">
+		{{line.words}}
+		<b *ngIf = countSyllables> {{line.syllableCount}} </b> <br>
 	</span>
 	</p>
 </div>
 
 <div id = "features">
-	<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels</label>
-	<input type = "checkbox" id = "highlight-vowels" data-ng-click="toggleHighlightVowels()" data-ng-model = "highlightVowels"/>
+	<label for = "highlight-vowels" class = "feature-checkbox-label">Count Syllables</label>
+	<input type = "checkbox" id = "highlight-vowels" (click)="toggleCountSyllables()"/>
 </div>
+</html>

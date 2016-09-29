@@ -3,10 +3,9 @@ export class Line {
     syllableCount: number;
     lineNumber: number;
 
-    constructor(words: string, lineNumber: number){
+    constructor(words: string, syllableCount: number){
         this.words = words;
-        this.syllableCount = -1;
-        this.lineNumber = lineNumber;
+        this.syllableCount = syllableCount;
     }
 
     countSyllables(): void{
