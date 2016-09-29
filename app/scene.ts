@@ -1,5 +1,6 @@
 import { Speech } from './speech'
 import { StageDirections } from './stage-directions'
+import { Line } from './line'
 
 export class Scene {
     speeches: Speech[];
@@ -7,12 +8,12 @@ export class Scene {
     directions: StageDirections[];
     actNumber: number;
     sceneNumber: number;
-    text: string;
+    lines: Line[];
 
-    constructor(act: number, scene: number, text: string){
+    constructor(act: number, scene: number, lines: Line[]){
         this.actNumber = act;
         this.sceneNumber = scene;
-        this.text = text;
+        this.lines = lines;
     }
 
     getSpeeches(): Speech[]{
