@@ -9,6 +9,13 @@ h1 {
     color: firebrick;
 }
 
+h2 {
+    text-align: center;
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 200%;
+    color: firebrick;
+}
+
 p {
   font-family: 'Crimson Text', serif;
   font-size: 14pt;
@@ -42,7 +49,7 @@ p {
   text-align: right;
 }
 #box {
-  width: 200px;
+  width: auto;
   height: 100px;
   background: white;
   overflow: hidden;
