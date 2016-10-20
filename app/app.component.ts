@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Line } from './line';
-import { Dropdown } from './dropdown.component';
 import { Scene } from './scene';
 
 @Component({
