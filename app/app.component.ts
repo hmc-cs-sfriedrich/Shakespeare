@@ -23,15 +23,15 @@ export class AppComponent implements OnInit {
 	ngOnInit(): void {
 		this.scenes = [];
 		let linesAct1Scene1: Line[] = [];
-		linesAct1Scene1.push(new Line("So have I heard and do in part believe it.", 11));
-		linesAct1Scene1.push(new Line("But, look, the morn, in russet mantle clad,", 10));
-		linesAct1Scene1.push(new Line("Walks o'er the dew of yon high eastward hill:", 10));
-		linesAct1Scene1.push(new Line("Break we our watch up; and by my advice,", 10));
-		linesAct1Scene1.push(new Line("Let us impart what we have seen to-night", 10));
-		linesAct1Scene1.push(new Line("Unto young Hamlet; for, upon my life,", 10));
-		linesAct1Scene1.push(new Line("This spirit, dumb to us, will speak to him.", 10));
-		linesAct1Scene1.push(new Line("Do you consent we shall acquaint him with it,", 11));
-		linesAct1Scene1.push(new Line("As needful in our loves, fitting our duty?", 11));
+		linesAct1Scene1.push(new Line("So have I heard and do in part believe it.", 11, 1));
+		linesAct1Scene1.push(new Line("But, look, the morn, in russet mantle clad,", 10, 2));
+		linesAct1Scene1.push(new Line("Walks o'er the dew of yon high eastward hill:", 10, 3));
+		linesAct1Scene1.push(new Line("Break we our watch up; and by my advice,", 10, 4));
+		linesAct1Scene1.push(new Line("Let us impart what we have seen to-night", 10, 5));
+		linesAct1Scene1.push(new Line("Unto young Hamlet; for, upon my life,", 10, 6));
+		linesAct1Scene1.push(new Line("This spirit, dumb to us, will speak to him.", 10, 7));
+		linesAct1Scene1.push(new Line("Do you consent we shall acquaint him with it,", 11, 8));
+		linesAct1Scene1.push(new Line("As needful in our loves, fitting our duty?", 11, 9));
 
 		let initialScene: Scene = new Scene(1,1, linesAct1Scene1);
 		this.sceneToDisplay = initialScene
@@ -70,5 +70,27 @@ export class AppComponent implements OnInit {
 
 	toggleCountSyllables(): void {
 		this.countSyllables = !this.countSyllables;
+	}
+
+	toPreviousScene(): void {
+		let sceneIndex = this.scenes.findIndex(x => x == this.sceneToDisplay);
+		sceneIndex--;
+		if (sceneIndex < 0){
+			return
+		}
+		else{
+			this.sceneToDisplay = this.scenes[sceneIndex]
+		}
+	}
+
+	toNextScene(): void {
+		let sceneIndex = this.scenes.findIndex(x => x == this.sceneToDisplay);
+		sceneIndex++;
+		if (sceneIndex > this.scenes.length - 1){
+			return
+		}
+		else{
+			this.sceneToDisplay = this.scenes[sceneIndex]
+		}
 	}
 }
