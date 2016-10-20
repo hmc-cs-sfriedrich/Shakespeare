@@ -1,14 +1,14 @@
 # Node modules
 node_modules/
 
-# Generated typings file
-typings/
 
 # Ignore generated .js and .map files
 app/*.js
 app/*.map
 
-# Ignore debugging log
-npm-debug.log
-
 *.json
+=======
+typings/
+
+# Debugging
+npm-debug.log
