@@ -1,18 +1,8 @@
 import docx
+import string
 
-# Key for tags
-# <s> = speaker
-# <d> = directions
-# <u> = unaccented
-# <a> = accented
-# <t> = act
-# <c> = scene
-# <b> = space
-
-Act = 'Act'
-Scene = 'Scene'
-act = 'act'
-scene = 'scene'
+act = 'Act'
+scene = 'Scene'
 number = 'number'
 tab = ' ' * 4
 lineBreak = '\n'
@@ -22,15 +12,12 @@ comma = ','
 openBracket = '{'
 closeBracket = '}'
 
-def pr(x):
-    print x
-
 def writeLine(output, numTabs, text):
-    if openBracket in text:
-        numTabs += 1
     if closeBracket in text:
         numTabs -= 1
     output.write(numTabs * tab + text + lineBreak)
+    if openBracket in text:
+        numTabs += 1
     return numTabs
 
 def writeMultiLineField(output, numTabs, field):
@@ -40,8 +27,13 @@ def writeMultiLineField(output, numTabs, field):
 
 def writeSingleLineField(output, numTabs, field, value, isLast):
     text = quote + field + quote + colon + quote + value + quote
-    if isLast:
+    if not isLast:
         text += comma
+    numTabs = writeLine(output, numTabs, text)
+    return numTabs
+
+def writeCloseField(output, numTabs):
+    text = closeBracket + comma
     numTabs = writeLine(output, numTabs, text)
     return numTabs
 
@@ -71,23 +63,27 @@ def main():
     # Number of times to indent for each line of output
     numTabs = 0
     # Current act #
-    numAct = 1
+    numActs = 1
     # Current Scene #
-    numScene = 1
+    numScenes = 1
+    # Current Speech #
+    numSpeeches = 1
+    # Current Line #
+    numLines = 1
       
     # Start writing beginning of file
     numTabs = writeLine(output, numTabs, openBracket)
     
-    text = quote + 'play' + quote + colon + openBracket
-    numTabs = writeLine(output, numTabs, text)
+    numTabs = writeMultiLineField(output, numTabs, 'play')
     
     title = doc.paragraphs[1].runs[0].text
-    text = quote + 'title' + quote + colon + quote + title + quote + comma
-    numTabs = writeLine(output, numTabs, text)
+    numTabs = writeSingleLineField(output, numTabs, 'title', title, False)
 
-      
-    searchColl = True
-    
+    stageDirectionOccurred = False
+    ##### Delete #############
+    for run in range(len(doc.paragraphs[922].runs)):
+        print doc.paragraphs[922].runs[run].text #, doc.paragraphs[922].runs[run].font
+    ##########################
     for i in range(firstLine, len(doc.paragraphs)):
         runs = doc.paragraphs[i].runs
         if len(runs) == 0:
@@ -103,57 +99,89 @@ def main():
             # if the second, third, or fourth run in a line is a tab, that means
             # a new character is speaking. Thus, the first run must be the
             # character's name.
-            if runs[1].text == '\t':
-                output.write('<s>' + runs[0].text.encode('utf-8') + '</s> ')
-                start = 2
-            elif len(runs) > 2 and runs[2].text == '\t':
-                output.write('<s>' + runs[0].text.encode('utf-8') +
-                         runs[1].text.encode('utf-8') + '</s> ')
-                start = 3
-            elif len(runs) > 3 and runs[3].text == '\t':
-                output.write('<s>' + runs[0].text.encode('utf-8') +
-                         runs[1].text.encode('utf-8') + 
-                         runs[2].text.encode('utf-8') + '</s> ')
-                start = 4
+            newSpeech = False
+            for i in [1,2,3]:
+                if len(runs) > i and runs[i].text == '\t':
+                    if numSpeeches > 1 and not stageDirectionOccurred:
+                        numTabs = writeCloseField(output, numTabs)
+                    numTabs = writeMultiLineField(output, numTabs, 'speech')
+                    numTabs = writeSingleLineField(output, numTabs, number, str(numSpeeches), False)
+                    
+                    text = ''
+                    for j in range(i):
+                        text += runs[j].text.encode('utf-8')
+                    numTabs = writeSingleLineField(output, numTabs, 'character', text, False)
+                    
+                    start = i + 1
+                    newSpeech = True
+                    numSpeeches += 1
+            if newSpeech:
+                # Do nothing
+                pass
             # Also skips footnotes, do this after tab just in cases of character
             # names like '1 witch'
             elif runs[0].text.isdigit():
                 continue
             # Stage directions case
             elif runs[0].italic and runs[1].italic:
-                output.write('<d>')
+                text = ''
                 for run in runs:
-                    if searchColl and 'Lady' in run.text:
-                        print i
-                        searchColl = False
-                    output.write(run.text.encode('utf-8'))
-                output.write('</d>\n')
+                    text += run.text.encode('utf-8')
+                numTabs = writeSingleLineField(output, numTabs, 'stageDirections', text, False)
+                stageDirectionOccurred = True
                 continue
             # Middle of a speech
             else:
                 start = 0
+            # Set up for writing a Line
+            stageDirectionOccurred = False
+            fullText = ''
+            numRuns = 1
+            numTabs = writeMultiLineField(output, numTabs, 'line')
+            # Write in fields of Line
+            numTabs = writeSingleLineField(output, numTabs, number, str(numLines), False)
+            # Write in runs
             for run in runs[start:]:
-                # Space case
-                if run.text.isspace():
-                    output.write('<b></b>')
+                # Space/punctuation case
+                if run.text.isspace() or run.text in string.punctuation:
+                    fullText += run.text.encode('utf-8')
                 elif not (run.text.isdigit()):
+                    fullText += run.text.encode('utf-8')
+                    numTabs = writeMultiLineField(output, numTabs, 'run')
+                    numTabs = writeSingleLineField(output, numTabs, number, str(numRuns), False) 
                     # Accented syllable case
                     if run.font.name != None:
-                        output.write('<a>' + run.text.encode('utf-8') + '</a> ')
+                        numTabs = writeSingleLineField(output, numTabs, 'accented', 'true', False)
                     # Unaccented syllable case
                     else:
-                        output.write('<u>' + run.text.encode('utf-8') + '</u> ')
+                        numTabs = writeSingleLineField(output, numTabs, 'accented', 'false', False)
+                    numTabs = writeSingleLineField(output, numTabs, 'text', run.text.encode('utf-8').strip(), True)
+                    numTabs = writeCloseField(output, numTabs)
+                    numRuns += 1
+            numTabs = writeSingleLineField(output, numTabs, 'lineText', fullText, False)
+            numTabs = writeSingleLineField(output, numTabs, 'syllables', str(numRuns), False)
+            numTabs = writeCloseField(output, numTabs)
+            numLines += 1
         # New act case
-        elif Act in runs[0].text:
-            text = quote + act + colon + openBracket
-            numTabs = writeLine(output, numTabs, text)
-            text = quote + number  
+        elif act in runs[0].text:
+            if numActs > 1:
+                numTabs = writeCloseField(output, numTabs)
+            numTabs = writeMultiLineField(output, numTabs, 'act')
+            numTabs = writeSingleLineField(output, numTabs, number, str(numActs), False)
+            numActs += 1
+            numScenes = 0
+              
         # New scene case
         elif scene in runs[0].text:
-            output.write('<c>' + runs[0].text + '</c>')
+            if numScenes > 1:
+                numTabs = writeCloseField(output, numTabs)
+            numTabs = writeMultiLineField(output, numTabs, 'scene')
+            numTabs = writeSingleLineField(output, numTabs, number, str(numScenes), False)
+            numScenes += 1
+            numSpeeches = 1
+            numLines = 1
         else:
             continue
-        output.write('\n')
     output.close()
 
 if __name__ == '__main__':
