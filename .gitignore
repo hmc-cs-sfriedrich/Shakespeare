@@ -10,3 +10,5 @@ app/*.map
 
 # Ignore debugging log
 npm-debug.log
+
+*.json
