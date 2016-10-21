@@ -1,6 +1,6 @@
 *, html {
     margin:0;
-    padding:0; 
+    padding:0;
 }
 h1 {
     text-align: center;
@@ -27,7 +27,7 @@ p {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin-right: 0;
-  min-width: 450px;
+  min-width: 530px;
   height: auto;
   background: white;
   -webkit-box-shadow: -6px 10px 6px -6px #777;
@@ -41,13 +41,34 @@ p {
   float: left;
 }
 
+#text{
+  float: left;
+  width: 85%;
+}
+
+#syllable-count{
+  float: left;
+  width: 10%;
+}
+
+#line-numbers{
+  float: left;
+  color: gray;
+  width: 5%;
+}
+
 #scene-text{
   margin-left: 10px;
 }
 
-#syl{
-  text-align: right;
+#line-number-text{
+  color: gray;
 }
+#syllable-text{
+  font-weight: bold;
+  color: firebrick;
+}
+
 #box {
   width: auto;
   height: 100px;
@@ -63,14 +84,12 @@ p {
                        0px 1px 10px -6px #777;
   float: left;
   position: fixed;
-  margin-left: 500px;
+  margin-left: 540px;
 }
 
 #navigation{
   display: flex;
 }
-
-
 
 .feature-checkbox-label {
   margin-left: 13px;
