@@ -6,7 +6,8 @@ node_modules/
 app/*.js
 app/*.map
 
-# Ignore debugging log
+*.json
+=======
 typings/
 
 # Debugging
