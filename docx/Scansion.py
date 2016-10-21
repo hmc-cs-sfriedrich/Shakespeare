@@ -1,4 +1,5 @@
 import docx
+import os
 import string
 
 act = 'Act'
@@ -33,6 +34,18 @@ def writeSingleLineField(output, numTabs, field, value, isLast):
     return numTabs
 
 def writeCloseField(output, numTabs):
+    # The offset needs to be dependent on numTabs!
+    '''
+    output.seek(-3, os.SEEK_END)
+    c = output.read(1)
+    if c == ',':
+        print c
+        output.truncate()
+        output.write(lineBreak)
+    else: 
+        output.seek(0, os.SEEK_END)
+    '''
+    
     text = closeBracket + comma
     numTabs = writeLine(output, numTabs, text)
     return numTabs
@@ -74,18 +87,15 @@ def main():
     # Start writing beginning of file
     numTabs = writeLine(output, numTabs, openBracket)
     
+    #Start play
     numTabs = writeMultiLineField(output, numTabs, 'play')
     
     title = doc.paragraphs[1].runs[0].text
     numTabs = writeSingleLineField(output, numTabs, 'title', title, False)
 
     stageDirectionOccurred = False
-    ##### Delete #############
-    for run in range(len(doc.paragraphs[922].runs)):
-        print doc.paragraphs[922].runs[run].text #, doc.paragraphs[922].runs[run].font
-    ##########################
-    for i in range(firstLine, len(doc.paragraphs)):
-        runs = doc.paragraphs[i].runs
+    for lineIterator in range(firstLine, len(doc.paragraphs)):
+        runs = doc.paragraphs[lineIterator].runs
         if len(runs) == 0:
             continue
         if len(runs) > 1:
@@ -124,10 +134,17 @@ def main():
                 continue
             # Stage directions case
             elif runs[0].italic and runs[1].italic:
+                if numSpeeches > 1 and not stageDirectionOccurred:
+                        numTabs = writeCloseField(output, numTabs)
                 text = ''
                 for run in runs:
                     text += run.text.encode('utf-8')
-                numTabs = writeSingleLineField(output, numTabs, 'stageDirections', text, False)
+                # Start stageDirections
+                numTabs = writeMultiLineField(output, numTabs, 'stageDirections')
+                numTabs = writeSingleLineField(output, numTabs, number, str(numLines), False)
+                numTabs = writeSingleLineField(output, numTabs, 'text', text, True)
+                numTabs = writeCloseField(output, numTabs)\
+                # End stageDirections                
                 stageDirectionOccurred = True
                 continue
             # Middle of a speech
@@ -159,13 +176,20 @@ def main():
                     numTabs = writeCloseField(output, numTabs)
                     numRuns += 1
             numTabs = writeSingleLineField(output, numTabs, 'lineText', fullText, False)
-            numTabs = writeSingleLineField(output, numTabs, 'syllables', str(numRuns), False)
+            numTabs = writeSingleLineField(output, numTabs, 'syllables', str(numRuns), True)
             numTabs = writeCloseField(output, numTabs)
             numLines += 1
         # New act case
         elif act in runs[0].text:
             if numActs > 1:
-                numTabs = writeCloseField(output, numTabs)
+                if not stageDirectionOccurred:
+                    numCloses = 3
+                else:
+                    numCloses = 2
+                # End Speech, Scene, and Act
+                for i in range(numCloses):
+                    numTabs = writeCloseField(output, numTabs)
+            # Start Act
             numTabs = writeMultiLineField(output, numTabs, 'act')
             numTabs = writeSingleLineField(output, numTabs, number, str(numActs), False)
             numActs += 1
@@ -174,7 +198,13 @@ def main():
         # New scene case
         elif scene in runs[0].text:
             if numScenes > 1:
+                if not stageDirectionOccurred:
+                    # End last speech
+                    numTabs = writeCloseField(output,numTabs)
+                # End Scene
                 numTabs = writeCloseField(output, numTabs)
+            stageDirectionOccurred = False
+            # Start Scene
             numTabs = writeMultiLineField(output, numTabs, 'scene')
             numTabs = writeSingleLineField(output, numTabs, number, str(numScenes), False)
             numScenes += 1
@@ -182,6 +212,7 @@ def main():
             numLines = 1
         else:
             continue
+    
     output.close()
 
 if __name__ == '__main__':
