@@ -1,0 +1,7 @@
+<label for="dropdown">Go to scene: </label>
+<select [(ngModel)]="sceneToDisplay" ngChange="update(scene)" id="dropdown" required>
+    <option *ngFor = "let scene of scenes" [ngValue]="scene">
+        Act {{scene.actNumber}}, Scene {{scene.sceneNumber}}
+    </option>
+</select>
+<p> {{displaySceneNumber}} </p>
