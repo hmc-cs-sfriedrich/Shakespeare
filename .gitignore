@@ -3,8 +3,11 @@ node_modules/
 
 
 # Ignore generated .js and .map files
-app/*.js
-app/*.map
+/app/*.js
+/app/*.map
+
+/demo/app/*.js
+/demo/app/*.map
 
 package.json
 tsconfig.json
