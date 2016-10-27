@@ -24,7 +24,7 @@ var HeroService = (function () {
     };
     HeroService.prototype.extractData = function (res) {
         var body = res.json();
-        return body.data || {};
+        return body.data || {}; // Change to parse our json (from .docx) file
     };
     HeroService.prototype.handleError = function (error) {
         // In a real world app, we might use a remote logging infrastructure
@@ -41,9 +41,6 @@ var HeroService = (function () {
     return HeroService;
 }());
 exports.HeroService = HeroService;
-/*
-  private heroesUrl = 'app/heroes.json'; // URL to JSON file
-*/
 /*
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
