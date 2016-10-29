@@ -2,7 +2,7 @@ import docx
 import os
 import string
 
-act = 'Act'
+act = 'Act '
 scene = 'Scene'
 number = 'number'
 tab = ' ' * 4
@@ -35,30 +35,33 @@ def writeSingleLineField(output, numTabs, field, value, isLast):
 
 def writeCloseField(output, numTabs):
     # The offset needs to be dependent on numTabs!
-    '''
-    output.seek(-3, os.SEEK_END)
+    #offset = -1 * (numTabs * 4 + 2)
+    output.seek(-2, 1)
     c = output.read(1)
+    print output.read(20)
     if c == ',':
-        print c
         output.truncate()
         output.write(lineBreak)
-    else: 
+    else:
         output.seek(0, os.SEEK_END)
-    '''
+    
     
     text = closeBracket + comma
     numTabs = writeLine(output, numTabs, text)
     return numTabs
+    
+def isOneCapLetter(string):
+    return len(string) == 1 and string[0].isupper()
 
 def main():
-    output = open('sh-mac-txt-scansion.txt', 'w+')
     doc = docx.Document('sh-mac-txt.docx')
     
     mystr = ""
-    for run in doc.paragraphs[1].runs:
-        print (run.text + ": " + str(run.font.name))
+    for run in doc.paragraphs[918].runs:
+        print (run.text + ": " + str(run.font.name) + ": " + str(run.font.italic))
         mystr += run.text
     print (mystr)
+    print len(doc.paragraphs[962].runs)
     
     # Find where Act 1 begins
     firstLine = 0
@@ -72,6 +75,12 @@ def main():
             foundFirstLine = True
             continue
         firstLine += 1
+        
+    print firstLine
+    if firstLine < 1:
+        return
+        
+    output = open('sh-mac-txt-scansion.txt', 'w+')
         
     # Number of times to indent for each line of output
     numTabs = 0
@@ -98,9 +107,40 @@ def main():
         runs = doc.paragraphs[lineIterator].runs
         if len(runs) == 0:
             continue
-        if len(runs) > 1:
+        # New act case
+        elif act in runs[0].text:
+            if numActs > 1:
+                if not stageDirectionOccurred:
+                    numCloses = 3
+                else:
+                    numCloses = 2
+                # End Speech, Scene, and Act
+                for i in range(numCloses):
+                    numTabs = writeCloseField(output, numTabs)
+            # Start Act
+            numTabs = writeMultiLineField(output, numTabs, 'act')
+            numTabs = writeSingleLineField(output, numTabs, number, str(numActs), False)
+            numActs += 1
+            numScenes = 1
+              
+        # New scene case
+        elif scene in runs[0].text:
+            if numScenes > 1:
+                if not stageDirectionOccurred:
+                    # End last speech
+                    numTabs = writeCloseField(output,numTabs)
+                # End Scene
+                numTabs = writeCloseField(output, numTabs)
+            stageDirectionOccurred = False
+            # Start Scene
+            numTabs = writeMultiLineField(output, numTabs, 'scene')
+            numTabs = writeSingleLineField(output, numTabs, number, str(numScenes), False)
+            numScenes += 1
+            numSpeeches = 1
+            numLines = 1
+        elif len(runs) > 1:
             # skip page headers
-            if runs[1].font == 'Bernard MT Condensed':
+            if runs[1].font.name == 'Bernard MT Condensed':
                 continue
             # skip footnotes
             if runs[0].font == 'None' and runs[1].font == 'None':
@@ -133,7 +173,8 @@ def main():
             elif runs[0].text.isdigit():
                 continue
             # Stage directions case
-            elif runs[0].italic and runs[1].italic:
+            elif runs[0].italic and (runs[1].italic or isOneCapLetter(runs[1].text)):
+                '''
                 if numSpeeches > 1 and not stageDirectionOccurred:
                         numTabs = writeCloseField(output, numTabs)
                 text = ''
@@ -146,6 +187,7 @@ def main():
                 numTabs = writeCloseField(output, numTabs)\
                 # End stageDirections                
                 stageDirectionOccurred = True
+                '''
                 continue
             # Middle of a speech
             else:
@@ -179,39 +221,11 @@ def main():
             numTabs = writeSingleLineField(output, numTabs, 'syllables', str(numRuns), True)
             numTabs = writeCloseField(output, numTabs)
             numLines += 1
-        # New act case
-        elif act in runs[0].text:
-            if numActs > 1:
-                if not stageDirectionOccurred:
-                    numCloses = 3
-                else:
-                    numCloses = 2
-                # End Speech, Scene, and Act
-                for i in range(numCloses):
-                    numTabs = writeCloseField(output, numTabs)
-            # Start Act
-            numTabs = writeMultiLineField(output, numTabs, 'act')
-            numTabs = writeSingleLineField(output, numTabs, number, str(numActs), False)
-            numActs += 1
-            numScenes = 0
-              
-        # New scene case
-        elif scene in runs[0].text:
-            if numScenes > 1:
-                if not stageDirectionOccurred:
-                    # End last speech
-                    numTabs = writeCloseField(output,numTabs)
-                # End Scene
-                numTabs = writeCloseField(output, numTabs)
-            stageDirectionOccurred = False
-            # Start Scene
-            numTabs = writeMultiLineField(output, numTabs, 'scene')
-            numTabs = writeSingleLineField(output, numTabs, number, str(numScenes), False)
-            numScenes += 1
-            numSpeeches = 1
-            numLines = 1
         else:
             continue
+            
+    while numTabs > 0:
+        numTabs = writeCloseField(output, numTabs)
     
     output.close()
 
