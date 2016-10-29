@@ -3,7 +3,6 @@ import { Act } from './act';
 export class Play {
     acts: Act[];
     title: string;
-    year: number;
 
     getActs(): Act[]{
         return this.acts;
@@ -11,9 +10,5 @@ export class Play {
 
     getTitle(): string{
         return this.title;
-    }
-
-    getYear(): number{
-        return this.year;
     }
 }
