@@ -1,15 +1,14 @@
 {
-	"play": {
+    "play": {
 		"title": "Macbeth",
 		"act": {
 			"number": "1",
 			"scene": {
 				"number": "1",
 				"speech": {
-					"number": "1"
-					"character": "Witch"
+					"number": "1",
+					"character": "Witch",
 					"line": {
-						"line": {
                         "number": "1",
                         "run": {
                             "number": "1",
@@ -88,7 +87,7 @@
                         },
                         "lineText": "b'In 'b'thun'b'der, 'b'light'b'ning, 'b'or 'b'in 'b'rain'b'?'",
                         "syllables": "9"
-                    },
+                    }
                 },
                 "speech": {
                     "number": "2",
