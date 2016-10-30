@@ -5,6 +5,7 @@ import { Headers, RequestOptions } from '@angular/http';
 
 import { Hero }           from './hero';
 import { Observable }     from 'rxjs/Observable';
+import { Play } from '../../../app/play';
 
 @Injectable()
 export class HeroService {
@@ -18,6 +19,13 @@ export class HeroService {
                     .catch(this.handleError);
   }
 
+/*
+  getHeroes (): Observable<Play> {  
+    return this.http.get(this.heroesUrl)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+*/
   private extractData(res: Response) {
     let body = res.json();
     return body.data || { }; // Change to parse our json (from .docx) file

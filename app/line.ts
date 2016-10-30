@@ -1,34 +1,22 @@
+import { Run } from './run'
+
 export class Line {
-    words: string;
-    syllableCount: number;
+    lineText: string;
+    syllables: number;
     lineNumber: number;
+	runs: Run[];
 
-    constructor(words: string, syllableCount: number, lineNumber: number){
-        this.words = words;
-        this.syllableCount = syllableCount;
-        this.lineNumber = lineNumber;
+    getSyllables(): number {
+		return this.syllables;
+	}
+
+    getLineText(): string{
+        return this.lineText;
     }
 
-    countSyllables(): void{
-        // Basic syllable counting algorithm
-        let words = this.words.toLowerCase(); 
-        if(words.length <= 3) { 
-            this.syllableCount = 1; 
-        }
-
-        words = words.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
-        words = words.replace(/^y/, '');
-        
-        this.syllableCount =  words.match(/[aeiouy]{1,2}/g).length;
-    }
-
-    getWords(): string{
-        return this.words;
-    }
-
-    getSyllableCount(): number{
-        return this.syllableCount;
-    }
+   getRuns(): Run[] {
+		return this.runs;
+   }
 
     getLineNumber(): number{
         return this.lineNumber;
