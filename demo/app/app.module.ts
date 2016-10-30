@@ -7,6 +7,8 @@ import { AppComponent }             from './app.component';
 
 import { HeroListComponent }        from './toh/hero-list.component';
 
+import { PlayComponent }			from './toh/play.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -16,7 +18,8 @@ import { HeroListComponent }        from './toh/hero-list.component';
   ],
   declarations: [
     AppComponent,
-    HeroListComponent
+    HeroListComponent,
+	PlayComponent
   ],
   bootstrap: [ AppComponent ]
 })
