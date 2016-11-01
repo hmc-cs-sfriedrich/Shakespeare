@@ -12,6 +12,8 @@ colon = ': '
 comma = ','
 openBracket = '{'
 closeBracket = '}'
+openList = '['
+closeList = ']'
 
 def writeLine(output, numTabs, text):
     if closeBracket in text:
@@ -22,8 +24,9 @@ def writeLine(output, numTabs, text):
     return numTabs
 
 def writeMultiLineField(output, numTabs, field):
-    text = quote + field + quote + colon + openBracket
+    text = quote + field + 's' + quote + colon + openList
     numTabs = writeLine(output, numTabs, text)
+    numTabs = writeLine(output, numTabs, openBracket)
     return numTabs
 
 def writeSingleLineField(output, numTabs, field, value, isLast):
