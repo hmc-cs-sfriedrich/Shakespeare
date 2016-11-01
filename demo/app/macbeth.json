@@ -1,179 +1,187 @@
-{
-    "play": {
+{ "data":[{
+  "play": {
 		"title": "Macbeth",
-		"act": {
-			"number": "1",
-			"scene": {
-				"number": "1",
-				"speech": {
-					"number": "1",
-					"character": "Witch",
-					"line": {
-                        "number": "1",
-                        "run": {
-                            "number": "1",
-                            "accented": "false",
-                            "text": "b'When '"
-                        },
-                        "run": {
-                            "number": "2",
-                            "accented": "true",
-                            "text": "b'shall '"
-                        },
-                        "run": {
-                            "number": "3",
-                            "accented": "false",
-                            "text": "b'we '"
-                        },
-                        "run": {
-                            "number": "4",
-                            "accented": "true",
-                            "text": "b'meet'"
-                        },
-                        "run": {
-                            "number": "5",
-                            "accented": "false",
-                            "text": "b'a'"
-                        },
-                        "run": {
-                            "number": "6",
-                            "accented": "true",
-                            "text": "b'gain'"
-                        },
+		"act": [
+		  { "number": "1",
+			  "scene": [
+			    {"number": "1",
+    				"speech": [
+    				  {"number": "1","character": "Witch",
+      					"line": [
+      					  {"number": "1",
+                            "run": [
+                            {
+                                "number": "1",
+                                "accented": "false",
+                                "text": "b'When '"
+                            },
+                            {
+                                "number": "2",
+                                "accented": "true",
+                                "text": "b'shall '"
+                            },
+                            {
+                                "number": "3",
+                                "accented": "false",
+                                "text": "b'we '"
+                            },
+                            {
+                                "number": "4",
+                                "accented": "true",
+                                "text": "b'meet'"
+                            },
+                            {
+                                "number": "5",
+                                "accented": "false",
+                                "text": "b'a'"
+                            },
+                            {
+                                "number": "6",
+                                "accented": "true",
+                                "text": "b'gain'"
+                            }
+                        ],
                         "lineText": "b'When 'b'shall 'b'we 'b'meet'b' 'b'a'b'gain'",
                         "syllables": "7"
                     },
-                    "line": {
-                        "number": "2",
-                        "run": {
-                            "number": "1",
-                            "accented": "false",
-                            "text": "b'In '"
-                        },
-                        "run": {
-                            "number": "2",
-                            "accented": "true",
-                            "text": "b'thun'"
-                        },
-                        "run": {
-                            "number": "3",
-                            "accented": "false",
-                            "text": "b'der, '"
-                        },
-                        "run": {
-                            "number": "4",
-                            "accented": "true",
-                            "text": "b'light'"
-                        },
-                        "run": {
-                            "number": "5",
-                            "accented": "false",
-                            "text": "b'ning, '"
-                        },
-                        "run": {
-                            "number": "6",
-                            "accented": "true",
-                            "text": "b'or '"
-                        },
-                        "run": {
-                            "number": "7",
-                            "accented": "false",
-                            "text": "b'in '"
-                        },
-                        "run": {
-                            "number": "8",
-                            "accented": "true",
-                            "text": "b'rain'"
-                        },
-                        "lineText": "b'In 'b'thun'b'der, 'b'light'b'ning, 'b'or 'b'in 'b'rain'b'?'",
-                        "syllables": "9"
-                    }
-                },
-                "speech": {
-                    "number": "2",
-                    "character": "b'Witch'",
-                    "line": {
-                        "number": "3",
-                        "run": {
-                            "number": "1",
-                            "accented": "true",
-                            "text": "b'When '"
-                        },
-                        "run": {
-                            "number": "2",
-                            "accented": "false",
-                            "text": "b'the '"
-                        },
-                        "run": {
-                            "number": "3",
-                            "accented": "true",
-                            "text": "b'hur'"
-                        },
-                        "run": {
-                            "number": "4",
-                            "accented": "false",
-                            "text": "b'ly'"
-                        },
-                        "run": {
-                            "number": "5",
-                            "accented": "true",
-                            "text": "b'bur'"
-                        },
-                        "run": {
-                            "number": "6",
-                            "accented": "false",
-                            "text": "b'ly\xe2\x80\x99s'"
-                        },
-                        "run": {
-                            "number": "7",
-                            "accented": "true",
-                            "text": "b'done'"
-                        },
-                        "lineText": "b'When 'b'the 'b'hur'b'ly'b'bur'b'ly\xe2\x80\x99s'b' 'b'done'b','",
-                        "syllables": "8"
-                    },
-                    "line": {
-                        "number": "4",
-                        "run": {
-                            "number": "1",
-                            "accented": "true",
-                            "text": "b'When '"
-                        },
-                        "run": {
-                            "number": "2",
-                            "accented": "false",
-                            "text": "b'the '"
-                        },
-                        "run": {
-                            "number": "3",
-                            "accented": "true",
-                            "text": "b'bat'"
-                        },
-                        "run": {
-                            "number": "4",
-                            "accented": "false",
-                            "text": "b'tle\xe2\x80\x99s '"
-                        },
-                        "run": {
-                            "number": "5",
-                            "accented": "true",
-                            "text": "b'lost '"
-                        },
-                        "run": {
-                            "number": "6",
-                            "accented": "false",
-                            "text": "b'and '"
-                        },
-                        "run": {
-                            "number": "7",
-                            "accented": "true",
-                            "text": "b'won'"
-                        },
-                        "lineText": "b'When 'b'the 'b'bat'b'tle\xe2\x80\x99s 'b'lost 'b'and 'b'won'b'.'",
-                        "syllables": "8"
-                    }
-                }
+                        {"number": "2",
+                            "run": [
+                            {
+                                "number": "1",
+                                "accented": "false",
+                                "text": "b'In '"
+                            },
+                            {
+                                "number": "2",
+                                "accented": "true",
+                                "text": "b'thun'"
+                            },
+                            {
+                                "number": "3",
+                                "accented": "false",
+                                "text": "b'der, '"
+                            },
+                            {
+                                "number": "4",
+                                "accented": "true",
+                                "text": "b'light'"
+                            },
+                            {
+                                "number": "5",
+                                "accented": "false",
+                                "text": "b'ning, '"
+                            },
+                            {
+                                "number": "6",
+                                "accented": "true",
+                                "text": "b'or '"
+                            },
+                            {
+                                "number": "7",
+                                "accented": "false",
+                                "text": "b'in '"
+                            },
+                            {
+                                "number": "8",
+                                "accented": "true",
+                                "text": "b'rain'"
+                            }
+                            ],
+                            "lineText": "b'In 'b'thun'b'der, 'b'light'b'ning, 'b'or 'b'in 'b'rain'b'?'",
+                            "syllables": "9"
+                        }
+                        ]
+				      },
+    				  {"number": "2","character": "b'Witch'",
+                        "line": [
+                            {"number": "3",
+                            "run": [
+                            {
+                                "number": "1",
+                                "accented": "true",
+                                "text": "b'When '"
+                            },
+                            {
+                                "number": "2",
+                                "accented": "false",
+                                "text": "b'the '"
+                            },
+                            {
+                                "number": "3",
+                                "accented": "true",
+                                "text": "b'hur'"
+                            },
+                            {
+                                "number": "4",
+                                "accented": "false",
+                                "text": "b'ly'"
+                            },
+                            {
+                                "number": "5",
+                                "accented": "true",
+                                "text": "b'bur'"
+                            },
+                            {
+                                "number": "6",
+                                "accented": "false",
+                                "text": "b'lys'"
+                            },
+                            {
+                                "number": "7",
+                                "accented": "true",
+                                "text": "b'done'"
+                            }
+                            ],
+                            "lineText": "b'When 'b'the 'b'hur'b'ly'b'bur'b'lys'b' 'b'done'b','",
+                            "syllables": "8"
+                            },
+                            {"number": "4",
+                            "run": [
+                                {
+                                "number": "1",
+                                "accented": "true",
+                                "text": "b'When '"
+                            },
+                            {
+                                "number": "2",
+                                "accented": "false",
+                                "text": "b'the '"
+                            },
+                            {
+                                "number": "3",
+                                "accented": "true",
+                                "text": "b'bat'"
+                            },
+                                {
+                                "number": "4",
+                                "accented": "false",
+                                "text": "b'tle '"
+                            },
+                            {
+                                "number": "5",
+                                "accented": "true",
+                                "text": "b'lost '"
+                            },
+                            {
+                                "number": "6",
+                                "accented": "false",
+                                "text": "b'and '"
+                            },
+                            {
+                                "number": "7",
+                                "accented": "true",
+                                "text": "b'won'"
+                            }
+                            ],
+                            "lineText": "b'When 'b'the 'b'bat'b'tles 'b'lost 'b'and 'b'won'b'.'",
+                            "syllables": "8"
+                            }
+                        ]
+    				  }
+    				]
+				  }
+				]
 			}
-		}
-	}
+    ]
+  }}]
 }

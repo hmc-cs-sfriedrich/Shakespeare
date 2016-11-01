@@ -9,7 +9,7 @@ import { Play } from '../../../app/play';
 
 @Injectable()
 export class HeroService {
-  private heroesUrl = 'app/heroes.json';  // URL to web API
+  private heroesUrl = '../macbeth.json';  // URL to web API
 
   constructor (private http: Http) {}
 
