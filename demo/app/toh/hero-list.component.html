@@ -1,8 +1,8 @@
-<h1>Tour of Heroes ({{mode}})</h1>
-<h3>Heroes:</h3>
+<h1>Shakespeare's plays! ({{mode}})</h1>
+<h3>Play:</h3>
 <ul>
   <li *ngFor="let hero of heroes">
-    {{hero.play.title}}
+    {{hero.play.title}}, {{hero.play.act[0].scene[0].speech[0].character}}: {{hero.play.act[0].scene[0].speech[0].line[0].lineText}}
   </li>
 </ul>
 <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
