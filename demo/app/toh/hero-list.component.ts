@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero }              from './hero';
 import { HeroService }       from './hero.service';
+import { Play }				 from './play';
 
 @Component({
   moduleId: module.id, //What is this?
@@ -10,17 +11,32 @@ import { HeroService }       from './hero.service';
 })
 export class HeroListComponent implements OnInit {
   errorMessage: string;
-  heroes: Hero[];
+  plays: Play[];
   mode = 'Observable';
+  scene: Scene;
 
   constructor (private heroService: HeroService) {}
 
-  ngOnInit() { this.getHeroes(); }
+  ngOnInit() {
+    let ps: Play;
+	this.getPlay();
+	console.log("Plays is undefined?");
+	console.log(ps === this.plays);
+  }
 
-  getHeroes() {
-    this.heroService.getHeroes()
+  getPlay() {
+    this.heroService.getPlay()
                      .subscribe(
-                       heroes => this.heroes = heroes,
+					 /*
+                       function(plays) {
+							this.plays = plays;
+							console.log(this.plays)
+							this.scene = plays[0].play.acts[0].scenes[0];
+							console.log(this.scene);
+							console.log(this.scene.sceneNumber);
+					   },
+					   */
+					   plays => this.plays = plays;
                        error =>  this.errorMessage = <any>error);
   }
 }

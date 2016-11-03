@@ -1,0 +1,67 @@
+{
+    "play": {
+        "title": "Macbeth",
+        "acts":[
+		{
+			"actNumber": "1",
+			"scenes": [
+			{
+				"sceneNumber": "1",
+				"speeches":  [
+				{
+					"speechNumber": "1"
+					"character": "Witch"
+					"lines": [
+					{
+						"lineNumber": "1",
+						"runs": [
+						{
+							"runNumber": "1",
+							"accented": "false",
+							"text": "When"
+						},
+						{
+							"runNumber": "2",
+							"accented": "true",
+							"text": "shall"
+						},
+						{
+							"runNumber": "3",
+							"accented": "false",
+							"text": "we"
+						}
+						],
+						"lineText": "When shall we",
+						"syllables": "3"
+					},
+					{
+						"lineNumber": "2",
+						"runs": [
+						{
+							"runNumber": "1",
+							"accented": "false",
+							"text": "In "
+						},
+						{
+							"runNumber": "2",
+							"accented": "true",
+							"text": "thun"
+						},
+						{
+							"runNumber": "3",
+							"accented": "false",
+							"text": "der"
+						}
+						],
+						"lineText": "In thunder",
+						"syllables": "3"
+					}
+					]
+				}
+				]
+			}
+			]
+		}
+		]
+    }
+}

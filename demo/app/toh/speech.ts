@@ -3,7 +3,7 @@ import { Line } from './line'
 export class Speech{
     lines: Line[];
 	speechNumber: number;
-    characterSpeaking: string;
+    character: string;
 
     getLines(): Line[]{
         return this.lines;

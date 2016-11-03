@@ -5,27 +5,20 @@ import { Headers, RequestOptions } from '@angular/http';
 
 import { Hero }           from './hero';
 import { Observable }     from 'rxjs/Observable';
-import { Play } from '../../../app/play';
+import { Play } from './play';
 
 @Injectable()
 export class HeroService {
-  private heroesUrl = '../macbeth.json';  // URL to web API
+  private playUrl = 'app/macbethNew.json';  // URL to web API
 
   constructor (private http: Http) {}
 
-  getHeroes (): Observable<Hero[]> { //Will become list of Scenes instead 
-    return this.http.get(this.heroesUrl)
+  getPlay (): Observable<Play> { //Will become list of Scenes instead 
+    return this.http.get(this.playUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
-/*
-  getHeroes (): Observable<Play> {  
-    return this.http.get(this.heroesUrl)
-                    .map(this.extractData)
-                    .catch(this.handleError);
-  }
-*/
   private extractData(res: Response) {
     let body = res.json();
     return body.data || { }; // Change to parse our json (from .docx) file
