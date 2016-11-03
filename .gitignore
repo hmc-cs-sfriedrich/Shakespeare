@@ -9,6 +9,9 @@ node_modules/
 /demo/app/*.js
 /demo/app/*.map
 
+/demo/app/toh/*.js
+/demo/app/toh/*.map
+
 package.json
 tsconfig.json
 typings.json
