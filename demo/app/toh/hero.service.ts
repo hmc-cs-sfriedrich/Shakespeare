@@ -5,7 +5,7 @@ import { Headers, RequestOptions } from '@angular/http';
 
 import { Hero }           from './hero';
 import { Observable }     from 'rxjs/Observable';
-import { Play } from './play';
+// import { Play } from './play';
 
 @Injectable()
 export class HeroService {
@@ -13,7 +13,7 @@ export class HeroService {
 
   constructor (private http: Http) {}
 
-  getPlay (): Observable<Play> { //Will become list of Scenes instead 
+  getPlay (): Observable<string> { //Will become list of Scenes instead 
     return this.http.get(this.playUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
