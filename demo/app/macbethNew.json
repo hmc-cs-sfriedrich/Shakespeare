@@ -9,8 +9,8 @@
 				"sceneNumber": "1",
 				"speeches":  [
 				{
-					"speechNumber": "1"
-					"characterSpeaking": "Witch"
+					"speechNumber": "1",
+					"characterSpeaking": "Witch",
 					"lines": [
 					{
 						"lineNumber": "1",
