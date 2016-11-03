@@ -11,14 +11,14 @@
 </ul>
 
 <ul>
-  <span *ngFor="let p of plays">
+  <span *ngFor="let p of play">
     <span *ngFor="let speech of p.play.acts[0].scenes[0].speeches">
 	<b> {{speech.character}} </b><br>
 		<span *ngFor="let line of speech.lines">
 			{{line.lineNumber}}
 			<span *ngFor="let run of line.runs">
 				<span *ngIf="run.accented === 'true'">
-				<b> {{run.text}} </b>
+				<b>{{run.text}}</b>
 				</span>
 				<span *ngIf="run.accented === 'false'">
 				{{run.text}}
