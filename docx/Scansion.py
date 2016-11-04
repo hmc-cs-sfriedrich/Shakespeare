@@ -1,70 +1,19 @@
 import docx
+import json
 import os
 import string
 
-act = 'Act '
-scene = 'Scene'
-number = 'number'
-tab = ' ' * 4
-lineBreak = '\n'
-quote = '"'
-colon = ': '
-comma = ','
-openBracket = '{'
-closeBracket = '}'
-openList = '['
-closeList = ']'
+runNumber = 'runNumber'
+lineNumber = 'lineNumber'
+speechNumber = 'speechNumber'
+sceneNumber = 'sceneNumber'
+actNumber = 'actNumber'
 
-def writeLine(output, numTabs, text):
-    if closeBracket in text:
-        numTabs -= 1
-    output.write(numTabs * tab + text + lineBreak)
-    if openBracket in text:
-        numTabs += 1
-    return numTabs
-
-def writeMultiLineField(output, numTabs, field):
-    text = quote + field + 's' + quote + colon + openList
-    numTabs = writeLine(output, numTabs, text)
-    numTabs = writeLine(output, numTabs, openBracket)
-    return numTabs
-
-def writeSingleLineField(output, numTabs, field, value, isLast):
-    text = quote + field + quote + colon + quote + value + quote
-    if not isLast:
-        text += comma
-    numTabs = writeLine(output, numTabs, text)
-    return numTabs
-
-def writeCloseField(output, numTabs):
-    # The offset needs to be dependent on numTabs!
-    #offset = -1 * (numTabs * 4 + 2)
-    output.seek(-2, 1)
-    c = output.read(1)
-    print output.read(20)
-    if c == ',':
-        output.truncate()
-        output.write(lineBreak)
-    else:
-        output.seek(0, os.SEEK_END)
-    
-    
-    text = closeBracket + comma
-    numTabs = writeLine(output, numTabs, text)
-    return numTabs
-    
 def isOneCapLetter(string):
     return len(string) == 1 and string[0].isupper()
 
 def main():
     doc = docx.Document('sh-mac-txt.docx')
-    
-    mystr = ""
-    for run in doc.paragraphs[918].runs:
-        print (run.text + ": " + str(run.font.name) + ": " + str(run.font.italic))
-        mystr += run.text
-    print (mystr)
-    print len(doc.paragraphs[962].runs)
     
     # Find where Act 1 begins
     firstLine = 0
@@ -78,15 +27,12 @@ def main():
             foundFirstLine = True
             continue
         firstLine += 1
+    
+    # Output dictionary
+    output = {}
+    # acts list
+    acts = []
         
-    print firstLine
-    if firstLine < 1:
-        return
-        
-    output = open('sh-mac-txt-scansion.txt', 'w+')
-        
-    # Number of times to indent for each line of output
-    numTabs = 0
     # Current act #
     numActs = 1
     # Current Scene #
@@ -95,58 +41,48 @@ def main():
     numSpeeches = 1
     # Current Line #
     numLines = 1
-      
-    # Start writing beginning of file
-    numTabs = writeLine(output, numTabs, openBracket)
     
-    #Start play
-    numTabs = writeMultiLineField(output, numTabs, 'play')
     
     title = doc.paragraphs[1].runs[0].text
-    numTabs = writeSingleLineField(output, numTabs, 'title', title, False)
-
-    stageDirectionOccurred = False
+    output['title'] = title
+    output ['acts'] = acts
+    
     for lineIterator in range(firstLine, len(doc.paragraphs)):
-        runs = doc.paragraphs[lineIterator].runs
-        if len(runs) == 0:
+        docRuns = doc.paragraphs[lineIterator].runs
+        if len(docRuns) == 0:
             continue
         # New act case
-        elif act in runs[0].text:
-            if numActs > 1:
-                if not stageDirectionOccurred:
-                    numCloses = 3
-                else:
-                    numCloses = 2
-                # End Speech, Scene, and Act
-                for i in range(numCloses):
-                    numTabs = writeCloseField(output, numTabs)
-            # Start Act
-            numTabs = writeMultiLineField(output, numTabs, 'act')
-            numTabs = writeSingleLineField(output, numTabs, number, str(numActs), False)
+        elif 'Act' in docRuns[0].text:
+            act = {actNumber: numActs}
+            print act
+            acts.append(act)
+            
+            scenes = []
+            act['scenes'] = scenes
+            
             numActs += 1
             numScenes = 1
-              
+            
         # New scene case
-        elif scene in runs[0].text:
-            if numScenes > 1:
-                if not stageDirectionOccurred:
-                    # End last speech
-                    numTabs = writeCloseField(output,numTabs)
-                # End Scene
-                numTabs = writeCloseField(output, numTabs)
-            stageDirectionOccurred = False
+        elif 'Scene' in docRuns[0].text:
+            
             # Start Scene
-            numTabs = writeMultiLineField(output, numTabs, 'scene')
-            numTabs = writeSingleLineField(output, numTabs, number, str(numScenes), False)
+            scene = {sceneNumber: numScenes}
+            scenes.append(scene)
+            
+            speeches = []
+            scene['speeches'] = speeches
+            
             numScenes += 1
             numSpeeches = 1
             numLines = 1
-        elif len(runs) > 1:
+            
+        elif len(docRuns) > 1:
             # skip page headers
-            if runs[1].font.name == 'Bernard MT Condensed':
+            if docRuns[1].font.name == 'Bernard MT Condensed':
                 continue
             # skip footnotes
-            if runs[0].font == 'None' and runs[1].font == 'None':
+            if docRuns[0].font == 'None' and docRuns[1].font == 'None':
                 continue
             # First line of new speech case
             # if the second, third, or fourth run in a line is a tab, that means
@@ -154,83 +90,67 @@ def main():
             # character's name.
             newSpeech = False
             for i in [1,2,3]:
-                if len(runs) > i and runs[i].text == '\t':
-                    if numSpeeches > 1 and not stageDirectionOccurred:
-                        numTabs = writeCloseField(output, numTabs)
-                    numTabs = writeMultiLineField(output, numTabs, 'speech')
-                    numTabs = writeSingleLineField(output, numTabs, number, str(numSpeeches), False)
+                if len(docRuns) > i and docRuns[i].text == '\t':
+                    speech = {'speechNumber': numSpeeches}
+                    speeches.append(speech)
                     
-                    text = ''
+                    character = ''
                     for j in range(i):
-                        text += runs[j].text.encode('utf-8')
-                    numTabs = writeSingleLineField(output, numTabs, 'character', text, False)
+                        character += docRuns[j].text.encode('utf-8')
+                    speech['character'] = character.strip()
                     
-                    start = i + 1
+                    
                     newSpeech = True
                     numSpeeches += 1
             if newSpeech:
-                # Do nothing
-                pass
+                lines = []
+                speech['lines'] = lines             
+                start = i + 1
             # Also skips footnotes, do this after tab just in cases of character
             # names like '1 witch'
-            elif runs[0].text.isdigit():
+            elif docRuns[0].text.isdigit():
                 continue
             # Stage directions case
-            elif runs[0].italic and (runs[1].italic or isOneCapLetter(runs[1].text)):
-                '''
-                if numSpeeches > 1 and not stageDirectionOccurred:
-                        numTabs = writeCloseField(output, numTabs)
-                text = ''
-                for run in runs:
-                    text += run.text.encode('utf-8')
-                # Start stageDirections
-                numTabs = writeMultiLineField(output, numTabs, 'stageDirections')
-                numTabs = writeSingleLineField(output, numTabs, number, str(numLines), False)
-                numTabs = writeSingleLineField(output, numTabs, 'text', text, True)
-                numTabs = writeCloseField(output, numTabs)\
-                # End stageDirections                
-                stageDirectionOccurred = True
-                '''
+            elif docRuns[0].italic and (docRuns[1].italic or isOneCapLetter(docRuns[1].text)):
                 continue
             # Middle of a speech
             else:
                 start = 0
             # Set up for writing a Line
-            stageDirectionOccurred = False
-            fullText = ''
+            line = {lineNumber: numLines}
+            lines.append(line)
+            
+            runs = []
+            line['runs'] = runs
             numRuns = 1
-            numTabs = writeMultiLineField(output, numTabs, 'line')
-            # Write in fields of Line
-            numTabs = writeSingleLineField(output, numTabs, number, str(numLines), False)
+            
+            fullText = ''
             # Write in runs
-            for run in runs[start:]:
+            for docRun in docRuns[start:]:
                 # Space/punctuation case
-                if run.text.isspace() or run.text in string.punctuation:
-                    fullText += run.text.encode('utf-8')
-                elif not (run.text.isdigit()):
-                    fullText += run.text.encode('utf-8')
-                    numTabs = writeMultiLineField(output, numTabs, 'run')
-                    numTabs = writeSingleLineField(output, numTabs, number, str(numRuns), False) 
+                if docRun.text.isspace() or docRun.text in string.punctuation:
+                    fullText += docRun.text.encode('utf-8')
+                elif not (docRun.text.isdigit()):
+                    fullText += docRun.text.encode('utf-8')
+                    run = {runNumber: numRuns}
+                    runs.append(run)
                     # Accented syllable case
-                    if run.font.name != None:
-                        numTabs = writeSingleLineField(output, numTabs, 'accented', 'true', False)
+                    if docRun.font.name != None:
+                        run['accented'] = 'true'
                     # Unaccented syllable case
                     else:
-                        numTabs = writeSingleLineField(output, numTabs, 'accented', 'false', False)
-                    numTabs = writeSingleLineField(output, numTabs, 'text', run.text.encode('utf-8').strip(), True)
-                    numTabs = writeCloseField(output, numTabs)
+                        run['accented'] = 'false'
+                    run['text'] = docRun.text.encode('utf-8').strip()
                     numRuns += 1
-            numTabs = writeSingleLineField(output, numTabs, 'lineText', fullText, False)
-            numTabs = writeSingleLineField(output, numTabs, 'syllables', str(numRuns), True)
-            numTabs = writeCloseField(output, numTabs)
+            line['lineText'] = fullText
+            line['syllables'] = numRuns
             numLines += 1
         else:
             continue
-            
-    while numTabs > 0:
-        numTabs = writeCloseField(output, numTabs)
     
-    output.close()
+    with open('sh-mac-txt-scansion.txt', 'w+') as outfile:
+        json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
+
 
 if __name__ == '__main__':
     main()
