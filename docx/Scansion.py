@@ -2,6 +2,7 @@ import docx
 import json
 import os
 import string
+import re
 
 runNumber = 'runNumber'
 lineNumber = 'lineNumber'
@@ -11,6 +12,10 @@ actNumber = 'actNumber'
 
 def isOneCapLetter(string):
     return len(string) == 1 and string[0].isupper()
+    
+def naiiveSyllableCount(word):
+    return len(''.join(" x"[c in "aeiouy"] for c in word.rstrip('e')).split())
+
 
 def main():
     doc = docx.Document('sh-mac-txt.docx')
@@ -54,7 +59,6 @@ def main():
         # New act case
         elif 'Act' in docRuns[0].text:
             act = {actNumber: numActs}
-            print act
             acts.append(act)
             
             scenes = []
@@ -78,11 +82,9 @@ def main():
             numLines = 1
             
         elif len(docRuns) > 1:
+            start = 0
             # skip page headers
             if docRuns[1].font.name == 'Bernard MT Condensed':
-                continue
-            # skip footnotes
-            if docRuns[0].font == 'None' and docRuns[1].font == 'None':
                 continue
             # First line of new speech case
             # if the second, third, or fourth run in a line is a tab, that means
@@ -102,10 +104,14 @@ def main():
                     
                     newSpeech = True
                     numSpeeches += 1
+                    tabIndex = i
+            # skip footnotes
+            if docRuns[start].font.bold != True and docRuns[start].font.italic != True and docRuns[start+1].font.bold != True and docRuns[start+1].font.italic != True:
+                continue
             if newSpeech:
                 lines = []
                 speech['lines'] = lines             
-                start = i + 1
+                start = tabIndex + 1
             # Also skips footnotes, do this after tab just in cases of character
             # names like '1 witch'
             elif docRuns[0].text.isdigit():
@@ -126,29 +132,55 @@ def main():
             
             fullText = ''
             # Write in runs
-            for docRun in docRuns[start:]:
+            for docRun in docRuns[start:]: 
                 # Space/punctuation case
-                if docRun.text.isspace() or docRun.text in string.punctuation:
-                    fullText += docRun.text.encode('utf-8')
-                elif not (docRun.text.isdigit()):
-                    fullText += docRun.text.encode('utf-8')
+                docRunText = docRun.text.encode('utf-8')
+                docRunTextUnstripped = docRunText.decode('utf-8').replace(u'\u2019', "'")
+                docRunTextUnstripped = docRunTextUnstripped.replace(u'\u2014','')
+                docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201c','"')
+                docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201d','"')
+                docRunTextUnstripped = docRunTextUnstripped.encode(u'utf-8')
+                docRunText = docRunTextUnstripped.strip()
+                if docRunText.isspace() or docRunText in string.punctuation:
+                    fullText += docRunTextUnstripped
+                elif re.match("[a-z.,!?']+", docRunText) is not None: 
+                    fullText += docRunTextUnstripped
                     run = {runNumber: numRuns}
                     runs.append(run)
-                    # Accented syllable case
-                    if docRun.font.name != None:
-                        run['accented'] = 'true'
-                    # Unaccented syllable case
+                    # Bolded syllable case
+                    if docRun.font.bold != None:
+                        run['bold'] = 'true'
+                    # Unbolded syllable case
                     else:
-                        run['accented'] = 'false'
-                    run['text'] = docRun.text.encode('utf-8').strip()
+                        run['bold'] = 'false'
+                    # Italicized syllable case
+                    if docRun.font.italic != None:
+                        run['italic'] = 'true'
+                    # Unitalicized syllable case
+                    else:
+                        run['italic'] = 'false'
+                    # Write out the run's text tot he json
+                    run['text'] = docRunText
                     numRuns += 1
             line['lineText'] = fullText
+            
+            words = fullText.split()
+            
+            if 'colloquial' in words:
+                print lineIterator
+            
+            # If the naiive count isn't close enough to the number of runs
+            # it means that it was prose, which is indicated as having
+            # syllable count of -1
+            naiiveCount = sum([naiiveSyllableCount(word) for word in words])
+            if abs(naiiveCount - numRuns) > 3:
+                numRuns = -1
             line['syllables'] = numRuns
             numLines += 1
         else:
             continue
     
-    with open('sh-mac-txt-scansion.txt', 'w+') as outfile:
+    with open('sh-mac-txt-scansion.json', 'w+') as outfile:
         json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 
