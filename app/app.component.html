@@ -3,10 +3,18 @@
 	<h1> A SHAKESPEARE WEBSITE </h1>
 	<div id = "reader">
 		<h2> Act {{sceneToDisplay.actNumber}} Scene {{sceneToDisplay.sceneNumber}}</h2>
+		<div id = "characters">
+			<p id = "characters-speech">
+				<span *ngFor="let line of sceneToDisplay.lines">
+					<b id = "character" *ngIf = "line.character != prevCharacter"> {{line.character}}</b>
+					<br>
+				</span>
+			</p>
+		</div>
 		<div id = "text">
 			<p id = "scene-text">
 				<span *ngFor="let line of sceneToDisplay.lines">
-					{{line.words}} 
+					{{line.words}}
 					<br>
 				</span>
 			</p>

@@ -1,10 +1,12 @@
 export class Line {
     words: string;
+    character: string;
     syllableCount: number;
     lineNumber: number;
 
-    constructor(words: string, syllableCount: number, lineNumber: number){
+    constructor(words: string, character: string, syllableCount: number, lineNumber: number){
         this.words = words;
+        this.character = character;
         this.syllableCount = syllableCount;
         this.lineNumber = lineNumber;
     }
