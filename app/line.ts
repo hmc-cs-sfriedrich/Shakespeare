@@ -1,7 +1,11 @@
+import { Run } from './run'
+
 export class Line {
     words: string;
     character: string;
     syllableCount: number;
+    lineText: string;
+    syllables: number;
     lineNumber: number;
 
     constructor(words: string, character: string, syllableCount: number, lineNumber: number){
@@ -17,19 +21,15 @@ export class Line {
         if(words.length <= 3) { 
             this.syllableCount = 1; 
         }
-
-        words = words.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
-        words = words.replace(/^y/, '');
-        
-        this.syllableCount =  words.match(/[aeiouy]{1,2}/g).length;
     }
 
-    getWords(): string{
-        return this.words;
-    }
+    getSyllables(): number {
+		return this.syllables;
+	}
 
-    getSyllableCount(): number{
-        return this.syllableCount;
+
+    getLineText(): string{
+        return this.lineText;
     }
 
     getLineNumber(): number{
