@@ -107,9 +107,10 @@ p {
   width: fit-content;
   margin: fit-content;
 }
-#checkbox{
+#checkboxes{
   width: fit-content;
 }
+
 .feature-checkbox-label {
   margin-left: 13px;
   
