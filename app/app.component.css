@@ -27,6 +27,11 @@ p {
   color: black;
 }
 
+b{
+  color: darkred;
+  font-weight: bold;
+}
+
 #reader {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
