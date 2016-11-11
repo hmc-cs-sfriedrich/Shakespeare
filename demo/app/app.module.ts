@@ -5,7 +5,7 @@ import { HttpModule, JsonpModule }  from '@angular/http';
 
 import { AppComponent }             from './app.component';
 
-import { HeroListComponent }        from './toh/hero-list.component';
+import { PlayComponent }        from './toh/play.component';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { HeroListComponent }        from './toh/hero-list.component';
   ],
   declarations: [
     AppComponent,
-    HeroListComponent
+    PlayComponent
   ],
   bootstrap: [ AppComponent ]
 })

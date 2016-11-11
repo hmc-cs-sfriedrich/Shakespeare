@@ -1,0 +1,33 @@
+<h1>Shakespeare's plays! ({{mode}})</h1>
+<h3>Play:</h3>
+<ul>
+  <li *ngFor="let p of plays">
+    title: {{p.play.title}} <br>
+	actNumber: {{p.play.acts[0].actNumber}} <br>
+	sceneNumber: {{p.play.acts[0].scenes[0].sceneNumber}} <br>
+	speechNumber: {{p.play.acts[0].scenes[0].speeches[0].speechNumber}} <br>
+	character: {{p.play.acts[0].scenes[0].speeches[0].character}}
+  </li>  
+</ul>
+
+<ul>
+  <span *ngFor="let p of play">
+    <span *ngFor="let speech of p.play.acts[0].scenes[0].speeches">
+	<b> {{speech.character}} </b><br>
+		<span *ngFor="let line of speech.lines">
+			{{line.lineNumber}}
+			<span *ngFor="let run of line.runs">
+				<span *ngIf="run.accented === 'true'">
+				<b>{{run.text}}</b>
+				</span>
+				<span *ngIf="run.accented === 'false'">
+				{{run.text}}
+				</span>
+			</span>
+			<br>
+		</span> 
+	</span>
+  </span>   
+</ul>
+
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
