@@ -180,9 +180,9 @@ def main():
                         runs.append(run)
             line['lineText'] = fullText
             
-            if 'will mingle' in fullText:
-                print lineIterator
-                return
+           # if 'will mingle' in fullText:
+            #    print lineIterator
+             #   return
             
             words = fullText.split()
             words = [stripUnicode(word) for word in words]
