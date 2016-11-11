@@ -8,7 +8,7 @@ import { Observable }     from 'rxjs/Observable';
 
 @Injectable()
 export class PlayService {
-  private playUrl = 'app/macbethNew.json';  // URL to web API
+  private playUrl = 'app/macbeth.json';  // URL to web API
 
   constructor (private http: Http) {}
 
