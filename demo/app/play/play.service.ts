@@ -4,15 +4,19 @@ import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 
 import { Observable }     from 'rxjs/Observable';
-// import { Play } from './play';
 
 @Injectable()
 export class PlayService {
   private playUrl = 'app/macbeth.json';  // URL to web API
+  private scene: number;
+  private act: number;
 
   constructor (private http: Http) {}
 
-  getPlay (): Observable<string> { //Will become list of Scenes instead 
+  getPlay (act: number, scene:number): Observable<string> { //Will become list of Scenes instead
+    this.scene = scene - 1;
+    this.act = act - 1;
+
     return this.http.get(this.playUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
@@ -20,7 +24,7 @@ export class PlayService {
 
   private extractData(res: Response) {
     let body = res.json();
-    return body.data || { }; // Change to parse our json (from .docx) file
+    return body.data || { };
   }
 
   private handleError (error: any) {

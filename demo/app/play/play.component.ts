@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayService }       from './play.service';
-import { Play }				       from './play';
 
 @Component({
   moduleId: module.id, //What is this?
@@ -16,11 +15,11 @@ export class PlayComponent implements OnInit {
   constructor (private playService: PlayService) {}
 
   ngOnInit() {
-	this.getPlay();
+	this.getScene();
   }
 
-  getPlay() {
-    this.playService.getPlay()
+  getScene() {
+    this.playService.getPlay(1, 1)
                      .subscribe(
 					   play => this.play = play,
              error =>  this.errorMessage = <any>error);
