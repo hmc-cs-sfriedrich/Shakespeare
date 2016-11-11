@@ -13,7 +13,7 @@ var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_component_1 = require('./app.component');
-var play_component_1 = require('./toh/play.component');
+var play_component_1 = require('./play/play.component');
 var AppModule = (function () {
     function AppModule() {
     }

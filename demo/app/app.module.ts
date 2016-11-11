@@ -5,7 +5,7 @@ import { HttpModule, JsonpModule }  from '@angular/http';
 
 import { AppComponent }             from './app.component';
 
-import { PlayComponent }        from './toh/play.component';
+import { PlayComponent }        from './play/play.component';
 
 @NgModule({
   imports: [
