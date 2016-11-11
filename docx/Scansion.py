@@ -15,6 +15,14 @@ def isOneCapLetter(string):
     
 def naiiveSyllableCount(word):
     return len(''.join(" x"[c in "aeiouy"] for c in word.rstrip('e')).split())
+    
+def stripUnicode(docRunTextUnstripped):
+    docRunTextUnstripped = docRunTextUnstripped.decode('utf-8').replace(u'\u2019', "'")
+    docRunTextUnstripped = docRunTextUnstripped.replace(u'\u2014','')
+    docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201c','"')
+    docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201d','"')
+    docRunTextUnstripped = docRunTextUnstripped.encode('utf-8')
+    return docRunTextUnstripped
 
 
 def main():
@@ -101,10 +109,10 @@ def main():
                         character += docRuns[j].text.encode('utf-8')
                     speech['character'] = character.strip()
                     
-                    
                     newSpeech = True
                     numSpeeches += 1
                     tabIndex = i
+                    break
             # skip footnotes
             if docRuns[start].font.bold != True and docRuns[start].font.italic != True and docRuns[start+1].font.bold != True and docRuns[start+1].font.italic != True:
                 continue
@@ -122,6 +130,16 @@ def main():
             # Middle of a speech
             else:
                 start = 0
+                # Other new speech option
+                if docRuns[start].italic and not docRuns[start].bold:
+                    speech = {'speechNumber': numSpeeches}
+                    speeches.append(speech)
+                    numSpeeches += 1
+                    speech['character'] = docRuns[start].text
+                    start += 1
+                    lines = []
+                    speech['lines'] = lines
+                    
             # Set up for writing a Line
             line = {lineNumber: numLines}
             lines.append(line)
@@ -132,21 +150,15 @@ def main():
             
             fullText = ''
             # Write in runs
-            for docRun in docRuns[start:]: 
+            for docRun in docRuns[start:]:
                 # Space/punctuation case
-                docRunText = docRun.text.encode('utf-8')
-                docRunTextUnstripped = docRunText.decode('utf-8').replace(u'\u2019', "'")
-                docRunTextUnstripped = docRunTextUnstripped.replace(u'\u2014','')
-                docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201c','"')
-                docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201d','"')
-                docRunTextUnstripped = docRunTextUnstripped.encode(u'utf-8')
+                docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
                 if docRunText.isspace() or docRunText in string.punctuation:
                     fullText += docRunTextUnstripped
-                elif re.match("[a-z.,!?']+", docRunText) is not None: 
+                elif not docRunText.isdigit() and not(docRun.italic and not docRun.bold): 
                     fullText += docRunTextUnstripped
                     run = {runNumber: numRuns}
-                    runs.append(run)
                     # Bolded syllable case
                     if docRun.font.bold != None:
                         run['bold'] = 'true'
@@ -161,10 +173,19 @@ def main():
                         run['italic'] = 'false'
                     # Write out the run's text tot he json
                     run['text'] = docRunText
-                    numRuns += 1
+                    if len(runs) > 1 and run['bold'] == runs[-1]['bold'] and run['italic'] == runs[-1]['italic']:
+                        runs[-1]['text'] += docRunText
+                    else: 
+                        numRuns += 1
+                        runs.append(run)
             line['lineText'] = fullText
             
+            if 'will mingle' in fullText:
+                print lineIterator
+                return
+            
             words = fullText.split()
+            words = [stripUnicode(word) for word in words]
             
             if 'colloquial' in words:
                 print lineIterator
