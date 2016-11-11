@@ -1,10 +1,15 @@
 *, html {
     margin:0;
-    padding:0; 
+    padding:0;
+}
+body {
+  width: 1000px;
+  margin: auto;
+  height: 1000px;
 }
 h1 {
     text-align: center;
-    margin:0;
+    margin-bottom:25px;
     font-family: 'Fjalla One', sans-serif;
     color: firebrick;
 }
@@ -27,7 +32,7 @@ p {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin-right: 0;
-  min-width: 450px;
+  min-width: 650px;
   height: auto;
   background: white;
   -webkit-box-shadow: -6px 10px 6px -6px #777;
@@ -39,17 +44,47 @@ p {
                        3px 5px 6px -6px #777, 
                        0px 1px 10px -6px #777;
   float: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-#scene-text{
+#characters{
+  float: left;
+  width: 12%;
+  margin-left: 5px;
+  text-align: center;
+}
+#character{
+  text-decoration: underline;
+}
+#text{
+  float: left;
+  width: 70%;
   margin-left: 10px;
 }
 
-#syl{
-  text-align: right;
+#syllable-count{
+  float: left;
+  width: 10%;
 }
+
+#line-numbers{
+  float: left;
+  color: gray;
+  width: 5%;
+}
+
+
+#line-number-text{
+  color: gray;
+}
+#syllable-text{
+  font-weight: bold;
+  color: firebrick;
+}
+
 #box {
-  width: auto;
+  width: fit-content;
   height: 100px;
   background: white;
   overflow: hidden;
@@ -61,22 +96,25 @@ p {
 	        box-shadow: -3px 5px 6px -6px #777, 
                        3px 5px 6px -6px #777, 
                        0px 1px 10px -6px #777;
-  float: left;
+  
+  margin-left: 660px;
+  margin-right: auto;
   position: fixed;
-  margin-left: 500px;
 }
 
 #navigation{
   display: flex;
+  width: fit-content;
+  margin: fit-content;
 }
-
-
-
+#checkbox{
+  width: fit-content;
+}
 .feature-checkbox-label {
   margin-left: 13px;
   
   width: 100%;
-  line-height: 100px;
+  line-height:90px;
   transform: translate3d(0, 0, 0);
   color: black;
   text-transform: uppercase;
