@@ -5,7 +5,7 @@ import { Headers, RequestOptions } from '@angular/http';
 
 import { Observable }     from 'rxjs/Observable';
 
-import '.app/play/rxjs-operators';
+import './rxjs-operators';
 
 @Injectable()
 export class PlayService {

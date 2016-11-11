@@ -5,8 +5,6 @@ import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 
-import './play/rxjs-operators';
-
 import { Observable }     from 'rxjs/Observable';
 
 @Component({

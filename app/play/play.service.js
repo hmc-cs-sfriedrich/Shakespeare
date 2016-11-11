@@ -12,7 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
-require('.app/play/rxjs-operators');
+require('./rxjs-operators');
 var PlayService = (function () {
     function PlayService(http) {
         this.http = http;

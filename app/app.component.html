@@ -1,67 +1,68 @@
-
 <body>
 	<h1> A SHAKESPEARE WEBSITE </h1>
-	<div id = "reader">
-		<h2> Act {{act + 1}} Scene {{scene + 1}}</h2>
-		<span *ngFor="let speech of play[0].play.acts[act].scenes[scene].speeches">
-			<div id = "characters">
-				<p id = "characters-speech">
-					<b id = "character"> {{speech.character}} </b>
-					<span *ngFor="let line of speech.lines">
+	<span *ngFor="let p of play">
+		<div id = "reader">
+			<h2> Act {{act + 1}} Scene {{scene + 1}}</h2>
+			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+				<div id = "characters">
+					<p id = "characters-speech">
+						<b id = "character"> {{speech.character}} </b>
+						<span *ngFor="let line of speech.lines">
+							<br>
+						</span>
 						<br>
-					</span>
-					<br>
-				</p>
-			</div>
-		</span>
-		<span *ngFor="let speech of play[0].play.acts[act].scenes[scene].speeches">
-			<div id = "text">
-				<p id = "scene-text">
-					<span *ngFor="let line of speech.lines">
-						<p>
-							<span *ngFor="let run of line.runs">
-								<span *ngIf="displayScansion">
-									<span *ngIf="run.accented === 'true'">
-										<b>{{run.text}}</b>
+					</p>
+				</div>
+			</span>
+			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+				<div id = "text">
+					<p id = "scene-text">
+						<span *ngFor="let line of speech.lines">
+							<p>
+								<span *ngFor="let run of line.runs">
+									<span *ngIf="displayScansion">
+										<span *ngIf="run.accented === 'true'">
+											<b>{{run.text}}</b>
+										</span>
+										<span *ngIf="run.accented === 'false'">
+											{{run.text}}
+										</span>
 									</span>
-									<span *ngIf="run.accented === 'false'">
+									<span *ngIf="!displayScansion">
 										{{run.text}}
 									</span>
 								</span>
-								<span *ngIf="!displayScansion">
-									{{run.text}}
-								</span>
-							</span>
-						</p>
-						<br>
-					</span>
-				</p>
-				<br>
-			</div>
-		</span>
-		<span *ngFor="let speech of play[0].play.acts[act].scenes[scene].speeches">
-			<div id = "syllable-count">
-				<p id = "syllable-text">
-					<span *ngFor="let line of speech.lines">
-						<b id = "syllables" *ngIf = countSyllables> {{line.syllables}} </b> 
-						<br>
-					</span>
-				</p>
-				<br>
-			</div>
-		</span>
-		<span *ngFor="let speech of play[0].play.acts[act].scenes[scene].speeches">
-			<div id = "line-numbers">
-				<p id = "line-number-text">
-					<span *ngFor="let line of speech.lines">
-						<b *ngIf = "line.lineNumber % 5 == 0"> {{line.lineNumber}} </b>
-						<br>
-					</span>
-				</p>
-				<br>
-			</div>
-		</span>
-	</div>
+							</p>
+							<br>
+						</span>
+					</p>
+					<br>
+				</div>
+			</span>
+			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+				<div id = "syllable-count">
+					<p id = "syllable-text">
+						<span *ngFor="let line of speech.lines">
+							<b id = "syllables" *ngIf = countSyllables> {{line.syllables}} </b> 
+							<br>
+						</span>
+					</p>
+					<br>
+				</div>
+			</span>
+			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+				<div id = "line-numbers">
+					<p id = "line-number-text">
+						<span *ngFor="let line of speech.lines">
+							<b *ngIf = "line.lineNumber % 5 == 0"> {{line.lineNumber}} </b>
+							<br>
+						</span>
+					</p>
+					<br>
+				</div>
+			</span>
+		</div>
+	</span>
 	
 	
 	<div id = "box">
