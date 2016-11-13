@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.getPlay();
-		this.numScenes = [1];
+		this.numScenes = [7, 4, 6, 3, 11];
 		this.act = 0;
 		this.scene = 0;
   	}

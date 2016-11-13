@@ -8,6 +8,7 @@
 					<p id = "characters-speech">
 						<b id = "character"> {{speech.character}} </b>
 						<span *ngFor="let line of speech.lines">
+							LOL
 							<br>
 						</span>
 						<br>
@@ -20,10 +21,10 @@
 						<p>
 							<span *ngFor="let run of line.runs">
 								<span *ngIf="displayScansion">
-									<span *ngIf="run.accented === 'true'">
+									<span *ngIf="run.bold === 'true'">
 										<b>{{run.text}}</b>
 									</span>
-									<span *ngIf="run.accented === 'false'">
+									<span *ngIf="run.bold === 'false'">
 										{{run.text}}
 									</span>
 								</span>

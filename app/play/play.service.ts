@@ -9,7 +9,7 @@ import './rxjs-operators';
 
 @Injectable()
 export class PlayService {
-  private playUrl = 'app/macbeth.json';  // URL to web API
+  private playUrl = 'app/sh-mac-txt-scansion.json';  // URL to web API
   private scene: number;
   private act: number;
 

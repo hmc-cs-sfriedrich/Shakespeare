@@ -20,4 +20,6 @@ typings.json
 typings/
 
 # Debugging
-npm-debug.log
+npm-debug.log.*
+
+/venv/
