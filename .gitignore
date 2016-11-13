@@ -5,6 +5,7 @@ node_modules/
 # Ignore generated .js and .map files
 /app/*.js
 /app/*.map
+/app/objects/*.js
 
 /demo/app/*.js
 /demo/app/*.map
