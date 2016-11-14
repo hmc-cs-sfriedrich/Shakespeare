@@ -54,7 +54,6 @@ export class AppComponent implements OnInit {
 			}
 		}
 		this.currentActScene = this.actScenes[0];
-		console.log(this.actScenes.length);
 	}
 
 	toggleCountSyllables(): void {
