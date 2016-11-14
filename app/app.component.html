@@ -3,66 +3,67 @@
 	<span *ngFor="let p of play">
 		<div id = "reader">
 			<h2> Act {{act + 1}} Scene {{scene + 1}}</h2>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
-				<div id = "characters">
-					<p id = "characters-speech">
-						<b id = "character"> {{speech.character}} </b>
-						<span *ngFor="let line of speech.lines">
-							LOL
-							<br>
-						</span>
-						<br>
-					</p>
-				</div>
-			</span>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
-				<div id = "text">
+			<!--We list each character who speaks in this div-->
+			<div id = "characters">
+				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+					<p id = "character">{{speech.character}}</p>
+					<!--Insert a line-break for every line of speech for correct spacing-->
 					<span *ngFor="let line of speech.lines">
-						<p>
-							<span *ngFor="let run of line.runs">
-								<span *ngIf="displayScansion">
-									<span *ngIf="run.bold === 'true'">
-										<b>{{run.text}}</b>
+						<p><br></p>
+					</span>
+				</span>
+				<p><br></p>
+			</div>
+			<!--This is where all the scene's text is displayed-->
+			<div id = "text">
+				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+						<span *ngFor="let line of speech.lines">
+							<p>
+								<span *ngFor="let run of line.runs"><span *ngIf="!displayScansion">{{run.text}}</span></span>
+									<!--<span *ngIf="displayScansion">
+										<span *ngIf="run.bold === 'true'">
+											<b>{{run.text}}</b>
+										</span>
+										<span *ngIf="run.bold === 'false'">
+											{{run.text}}
+										</span>
 									</span>
-									<span *ngIf="run.bold === 'false'">
-										{{run.text}}
 									</span>
-								</span>
-								<span *ngIf="!displayScansion">
-									{{run.text}}
-								</span>
+									-->
+								
+							</p>
+						</span>
+						<p><br></p>
+				</span>
+			</div>
+			<!--We display syllable counts for each line only if countSyllables is checked-->
+			<div id = "syllable-count">
+				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+						<p id = "syllable-text">
+							<span *ngFor="let line of speech.lines">
+								<b id = "syllable-text" *ngIf = countSyllables> {{line.syllables}} </b> 
+								<br>
 							</span>
 						</p>
-					</span>
-					<br>
-				</div>
-			</span>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
-				<div id = "syllable-count">
-					<p id = "syllable-text">
-						<span *ngFor="let line of speech.lines">
-							<b id = "syllables" *ngIf = countSyllables> {{line.syllables}} </b> 
-							<br>
-						</span>
-					</p>
-					<br>
-				</div>
-			</span>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
-				<div id = "line-numbers">
-					<p id = "line-number-text">
-						<span *ngFor="let line of speech.lines">
-							<b> {{line.lineNumber}} </b>
-							<br>
-						</span>
-					</p>
-					<br>
-				</div>
-			</span>
+						<p><br></p>
+				</span>
+			</div>
+			<!--We always display the line number for each line-->
+			<div id = "line-numbers">
+				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+						<p id = "line-number-text">
+							<span *ngFor="let line of speech.lines">
+								{{line.lineNumber}}
+								<br>
+							</span>
+						</p>
+						<p><br></p>
+				</span>
+			</div>
 		</div>
 	</span>
 	
-	
+	<!--This div contains all navigation options and analysis features-->
 	<div id = "box">
 		<div id = "navigation">
 			<div id = "nav-button-1">
