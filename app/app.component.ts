@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayService } from './play/play.service'
+import { PlayService } from './play/play.service';
+import { ActScene } from './play/actscene';
 
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -24,22 +25,36 @@ export class AppComponent implements OnInit {
 	errorMessage: string;
 	act: number;
 	scene: number;
-	numScenes: number[];
+	actScenes: ActScene[];
+	currentActScene: ActScene;
 
 	constructor(private playService: PlayService) {}
 
 	ngOnInit() {
-		this.getPlay();
-		this.numScenes = [7, 4, 6, 3, 11];
+		this.getPlay("macbeth");
+		this.actScenes = [];
 		this.act = 0;
 		this.scene = 0;
   	}
 
-	getPlay() {
-		this.playService.getPlay()
+	getPlay(play: string) {
+		this.playService.getPlay(play)
 						.subscribe(
-						play => this.play = play,
+						play => this.initPlay(play),
 				error =>  this.errorMessage = <any>error);
+	}
+
+	initPlay(play: string) {
+		this.play = play;
+		var sceneIndex: number = 0;
+		for (let act of play[0].play.acts) {
+			for (let scene of act.scenes) {
+				this.actScenes.push(new ActScene(act.actNumber, scene.sceneNumber, sceneIndex));
+				sceneIndex++;
+			}
+		}
+		this.currentActScene = this.actScenes[0];
+		console.log(this.actScenes.length);
 	}
 
 	toggleCountSyllables(): void {
@@ -51,32 +66,16 @@ export class AppComponent implements OnInit {
 	}
 
 	toPreviousScene(): void {
-		if (this.scene == 0) {
-			if(this.act == 0) {
-				return;
-			}
-			else {
-				this.act--;
-				this.scene = this.numScenes[this.act];
-			}
-		}
-		else {
-			this.scene--;
+		// Only attempt to navigate back a scene if NOT at first scene in first act
+		if (this.currentActScene.sceneIndex != 0) {
+			this.currentActScene = this.actScenes[this.currentActScene.sceneIndex - 1];
 		}
 	}
 
 	toNextScene(): void {
-		if(this.scene == this.numScenes[this.act] - 1) {
-			if(this.act == this.numScenes.length - 1) {
-				return;
-			}
-			else {
-				this.act++;
-				this.scene = 0;
-			}
-		}
-		else {
-			this.scene++;
+		// Only attempt to navigate forward a scene if NOT at last scene in last act
+		if (this.currentActScene.sceneIndex < this.actScenes.length - 1) {
+			this.currentActScene = this.actScenes[this.currentActScene.sceneIndex + 1];
 		}
 	}
 }

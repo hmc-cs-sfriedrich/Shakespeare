@@ -9,14 +9,15 @@ import './rxjs-operators';
 
 @Injectable()
 export class PlayService {
-  private playUrl = 'app/sh-mac-txt-scansion.json';  // URL to web API
+  
   private scene: number;
   private act: number;
 
   constructor (private http: Http) {}
 
-  getPlay (): Observable<string> { //Will become list of Scenes instead
-    return this.http.get(this.playUrl)
+  getPlay (play: string): Observable<string> { //Will become list of Scenes instead
+    let playUrl = "app/" + play + ".json";
+    return this.http.get(playUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
   }

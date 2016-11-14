@@ -2,20 +2,19 @@
 	<h1> A SHAKESPEARE WEBSITE </h1>
 	<span *ngFor="let p of play">
 		<div id = "reader">
-			<h2> Act {{act + 1}} Scene {{scene + 1}}</h2>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
+			<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 				<div id = "characters">
 					<p id = "characters-speech">
 						<b id = "character"> {{speech.character}} </b>
 						<span *ngFor="let line of speech.lines">
-							LOL
 							<br>
 						</span>
 						<br>
 					</p>
 				</div>
 			</span>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+			<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 				<div id = "text">
 					<span *ngFor="let line of speech.lines">
 						<p>
@@ -37,7 +36,7 @@
 					<br>
 				</div>
 			</span>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+			<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 				<div id = "syllable-count">
 					<p id = "syllable-text">
 						<span *ngFor="let line of speech.lines">
@@ -48,7 +47,7 @@
 					<br>
 				</div>
 			</span>
-			<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+			<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 				<div id = "line-numbers">
 					<p id = "line-number-text">
 						<span *ngFor="let line of speech.lines">
@@ -64,26 +63,30 @@
 	
 	
 	<div id = "box">
+		<!--<div>
+			<select [(ngModel)]="currentActScene" id="dropdown" required>
+				<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
+					Act {{actScene.act}}, Scene {{actScene.scene}}
+				</option>
+			</select>
+		</div>-->
 		<div id = "navigation">
 			<div id = "nav-button-1">
 				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
 			</div>
 			<div id = "dropdown-menu">
 				<label id="features" for="dropdown"> </label>
-				<!--
-				<select [(ngModel)]="sceneToDisplay" id="dropdown" required>
-					<option *ngFor = "let scene of scenes" [ngValue]="scene">
-						Act {{act}}, Scene {{scene}}
+				<select [(ngModel)]="currentActScene" id="dropdown" required>
+					<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
+						Act {{actScene.act}}, Scene {{actScene.scene}}
 					</option>
 				</select>
-				-->
 			</div>
 			<div id = "nav-button-2">
 				<form name = "hello"><input type="button" value="Next" (click)="toNextScene()" /></form>
 			</div>
 		</div>
 		<div id = "checkboxes">
-			
 				<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
 				<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
 			
