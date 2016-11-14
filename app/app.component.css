@@ -21,22 +21,20 @@ h2 {
     color: firebrick;
 }
 
-p {
+p, b {
   font-family: 'Crimson Text', serif;
   font-size: 14pt;
   color: black;
 }
 
-b{
-  font-weight: bold;
-}
+
 
 #reader {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin-right: 0;
-  min-width: 650px;
+  width: 650px;
   height: auto;
   background: white;
   -webkit-box-shadow: -6px 10px 6px -6px #777;
@@ -81,10 +79,12 @@ b{
 
 #line-number-text{
   color: gray;
+  margin-left: 20%;
 }
 #syllable-text{
   font-weight: bold;
   color: firebrick;
+  margin-left: 20%;
 }
 
 #box {
