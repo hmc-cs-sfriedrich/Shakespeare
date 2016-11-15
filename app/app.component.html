@@ -1,38 +1,99 @@
-
 <body>
 	<h1> A SHAKESPEARE WEBSITE </h1>
-	<div id = "navigation">
-		<div id = "nav-button-1">
-			<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
+	<span *ngFor="let p of play">
+		<div id = "reader">
+			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
+			<!--We list each character who speaks in this div-->
+			<div id = "characters">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+					<p id = "character">{{speech.character}}</p>
+					<!--Insert a line-break for every line of speech for correct spacing-->
+					<span *ngFor="let line of speech.lines">
+						<p><br></p>
+					</span>
+				</span>
+				<p><br></p>
+			</div>
+			<!--This is where all the scene's text is displayed-->
+			<div id = "text">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+						<span *ngFor="let line of speech.lines">
+							<p>
+								<span *ngFor="let run of line.runs"><span *ngIf="!displayScansion">{{run.text}}</span></span>
+									<!--<span *ngIf="displayScansion">
+										<span *ngIf="run.bold === 'true'">
+											<b>{{run.text}}</b>
+										</span>
+										<span *ngIf="run.bold === 'false'">
+											{{run.text}}
+										</span>
+									</span>
+									</span>
+									-->
+								
+							</p>
+						</span>
+						<p><br></p>
+				</span>
+			</div>
+			<!--We display syllable counts for each line only if countSyllables is checked-->
+			<div id = "syllable-count">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+					<p id = "syllable-text">
+						<span *ngFor="let line of speech.lines">
+							<b id = "syllable-text" *ngIf = countSyllables> {{line.syllables}} </b> 
+							<br>
+						</span>
+					</p>
+				</span>
+			</div>
+			<!--We always display the line number for each line-->
+			<div id = "line-numbers">
+				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+						<p id = "line-number-text">
+							<span *ngFor="let line of speech.lines">
+								{{line.lineNumber}}
+								<br>
+							</span>
+						</p>
+						<p><br></p>
+				</span>
+			</div>
 		</div>
-		<div id = "dropdown-menu">
-			<label id="features" for="dropdown"> </label>
-			<select [(ngModel)]="sceneToDisplay" ngChange="update(scene)" id="dropdown" required>
-				<option *ngFor = "let scene of scenes" [ngValue]="scene">
-					Act {{scene.actNumber}}, Scene {{scene.sceneNumber}}
+	</span>
+	
+	<!--This div contains all navigation options and analysis features-->
+	<div id = "box">
+		<!--<div>
+			<select [(ngModel)]="currentActScene" id="dropdown" required>
+				<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
+					Act {{actScene.act}}, Scene {{actScene.scene}}
 				</option>
 			</select>
+		</div>-->
+		<div id = "navigation">
+			<div id = "nav-button-1">
+				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
+			</div>
+			<div id = "dropdown-menu">
+				<label id="features" for="dropdown"> </label>
+				<select [(ngModel)]="currentActScene" id="dropdown" required>
+					<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
+						Act {{actScene.act}}, Scene {{actScene.scene}}
+					</option>
+				</select>
+			</div>
+			<div id = "nav-button-2">
+				<form name = "hello"><input type="button" value="Next" (click)="toNextScene()" /></form>
+			</div>
 		</div>
-		<div id = "nav-button-2">
-			<form><input type="button" value="Next" (click)="toNextScene()" /></form>
+		<div id = "checkboxes">
+				<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
+				<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
+			
+				<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
+				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()"/>
+			
 		</div>
 	</div>
-	<div id = "reader">
-		<p id = "scene-text">
-		<span *ngFor="let line of sceneToDisplay.lines">
-			{{line.words}}
-			<b *ngIf = countSyllables> {{line.syllableCount}} </b> <br>
-			<b *ngIf = "line.lineNumber % 5 == 0"> {{line.lineNumber}} </b>
-		</span>
-		</p>
-	</div>
-	
-	
-	<div id = "box">
-		<div id = "checkbox">
-		<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
-		<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
-		</div>
-	</div>
-	
 </body>
