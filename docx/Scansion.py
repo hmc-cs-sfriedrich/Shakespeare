@@ -16,6 +16,9 @@ def isOneCapLetter(string):
 def naiiveSyllableCount(word):
     return len(''.join(" x"[c in "aeiouy"] for c in word.rstrip('e')).split())
     
+def titleForSave(title):
+    return '-'.join(title.split()).lower()
+    
 def stripUnicode(docRunTextUnstripped):
     docRunTextUnstripped = docRunTextUnstripped.decode('utf-8').replace(u'\u2019', "'")
     docRunTextUnstripped = docRunTextUnstripped.replace(u'\u2014','')
@@ -43,6 +46,13 @@ def parsePlay(playName):
     
     # Output dictionary
     output = {}
+    #Outer layer
+    data = []
+    output['data'] = data
+    playOuter = {}
+    data.append(playOuter)
+    play = {}
+    playOuter['play'] = play
     # acts list
     acts = []
         
@@ -57,15 +67,15 @@ def parsePlay(playName):
     
     
     title = doc.paragraphs[1].runs[0].text
-    output['title'] = title
-    output ['acts'] = acts
+    play['title'] = title
+    play ['acts'] = acts
     
     for lineIterator in range(firstLine, len(doc.paragraphs)):
         docRuns = doc.paragraphs[lineIterator].runs
         if len(docRuns) == 0:
             continue
         # New act case
-        elif 'Act' in docRuns[0].text:
+        elif 'Act' in docRuns[0].text and len(docRuns) == 1:
             act = {actNumber: numActs}
             acts.append(act)
             
@@ -76,7 +86,7 @@ def parsePlay(playName):
             numScenes = 1
             
         # New scene case
-        elif 'Scene' in docRuns[0].text:
+        elif 'Scene' in docRuns[0].text and len(docRuns) == 1:
             
             # Start Scene
             scene = {sceneNumber: numScenes}
@@ -201,7 +211,7 @@ def parsePlay(playName):
         else:
             continue
     
-    with open(playName[:-4] + '.json', 'w+') as outfile:
+    with open("../app/" + titleForSave(title) + '.json', 'w+') as outfile:
         json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 def main():
