@@ -25,8 +25,8 @@ def stripUnicode(docRunTextUnstripped):
     return docRunTextUnstripped
 
 
-def main():
-    doc = docx.Document('sh-mac-txt.docx')
+def parsePlay(playName):
+    doc = docx.Document(playName)
     
     # Find where Act 1 begins
     firstLine = 0
@@ -172,7 +172,7 @@ def main():
                     else:
                         run['italic'] = 'false'
                     # Write out the run's text tot he json
-                    run['text'] = docRunText
+                    run['text'] = docRunTextUnstripped
                     if len(runs) > 1 and run['bold'] == runs[-1]['bold'] and run['italic'] == runs[-1]['italic']:
                         runs[-1]['text'] += docRunText
                     else: 
@@ -201,9 +201,13 @@ def main():
         else:
             continue
     
-    with open('sh-mac-txt-scansion.json', 'w+') as outfile:
+    with open(playName[:-4] + '.json', 'w+') as outfile:
         json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
+def main():
+    for filename in os.listdir(os.getcwd()):
+        if filename.endswith(".docx") and filename[:2] != '~$': 
+            parsePlay(filename)
 
 if __name__ == '__main__':
     main()
