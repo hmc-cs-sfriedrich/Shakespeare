@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play/play.service';
 import { ActScene } from './play/actscene';
+import { Play } from './play/play';
 
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -23,19 +24,24 @@ export class AppComponent implements OnInit {
 	prevCharacter: string;
 	play: string;
 	errorMessage: string;
-	act: number;
-	scene: number;
 	actScenes: ActScene[];
 	currentActScene: ActScene;
+	plays: Play[];
+	currentPlay: Play;
 
 	constructor(private playService: PlayService) {}
 
 	ngOnInit() {
-		this.getPlay("macbeth");
+		this.initPlays();
+		this.getPlay(this.currentPlay.fileName);
 		this.actScenes = [];
-		this.act = 0;
-		this.scene = 0;
   	}
+
+	initPlays() {
+		this.plays = [];
+		this.plays.push(new Play("Macbeth", "macbeth", 0));
+		this.currentPlay = this.plays[0];
+	}
 
 	getPlay(play: string) {
 		this.playService.getPlay(play)

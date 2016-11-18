@@ -1,5 +1,13 @@
 <body>
-	<h1> A SHAKESPEARE WEBSITE </h1>
+	<div>
+		<label id="plays" for="play-dropdown"> </label>
+		<select [(ngModel)]="currentPlay" id="play-dropdown" required>
+			<option *ngFor = "let play of plays" [ngValue]="currentPlay">
+				{{currentPlay.title}}
+			</option>
+		</select>
+	</div>
+	<h1> {{currentPlay.title}} </h1>
 	<span *ngFor="let p of play">
 		<div id = "reader">
 			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
@@ -49,7 +57,7 @@
 			</div>
 			<!--We always display the line number for each line-->
 			<div id = "line-numbers">
-				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 						<p id = "line-number-text">
 							<span *ngFor="let line of speech.lines">
 								{{line.lineNumber}}
