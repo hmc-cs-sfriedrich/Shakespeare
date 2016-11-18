@@ -1,0 +1,36 @@
+{
+    "play": {
+        "title": "play_title_here",
+		[other necessary play/file metadata here]
+		"act": {
+			"number": "1",
+			"scene": {
+				"number": "1",
+				"stageDirections": {
+					"text": "stage_direction_text_here"
+				},
+				"speech": {
+					"character": "who's speaking"
+					"line": {
+						"syllables": "len(runs)",
+						"run": {
+							"text": "run_text_here",
+							"accented": "y_or_n"
+						},
+						"run": {
+							...
+						},
+						...
+					}
+				}
+			},
+			"speech": {
+				...
+			}
+		},
+		"act": {
+			"number": "2",
+			...
+		}
+    }
+}
