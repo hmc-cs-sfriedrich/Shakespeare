@@ -58,6 +58,7 @@ export class AppComponent implements OnInit {
 
 	initPlay(play: string) {
 		this.play = play;
+		console.log(play[0].play);
 		var sceneIndex: number = 0;
 		for (let act of play[0].play.acts) {
 			for (let scene of act.scenes) {
