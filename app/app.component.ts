@@ -37,9 +37,15 @@ export class AppComponent implements OnInit {
 		this.actScenes = [];
   	}
 
+	loadNewPlay() {
+		console.log("Hello!!");
+		this.getPlay(this.currentPlay.fileName);
+	}
+
 	initPlays() {
 		this.plays = [];
 		this.plays.push(new Play("Macbeth", "macbeth", 0));
+		this.plays.push(new Play("Not A Play", "not-a-play", 1));
 		this.currentPlay = this.plays[0];
 	}
 
