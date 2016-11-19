@@ -19,9 +19,11 @@
 			<div id = "characters">
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "character">{{speech.character}}</p>
-					<!--Insert a line-break for every line of speech for correct spacing-->
-					<span *ngFor="let line of speech.lines">
-						<p><br></p>
+					<!--Insert a line-break for every line of speech (minus 1 because the character name takes up a line) for correct spacing-->
+					<span *ngFor="let line of speech.lines; let i = index">
+						<template [ngIf]="i>0">
+							<p><br></p>
+						</template>
 					</span>
 				</span>
 				<p><br></p>
@@ -41,20 +43,17 @@
 								--></span>
 							</p>
 						</span>
-						<p><br></p>
 				</span>
 			</div>
 			<!--We display syllable counts for each line only if countSyllables is checked-->
 			<div id = "syllable-count">
-				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "syllable-text">
 						<span *ngFor="let line of speech.lines">
 							<b id = "syllable-text" *ngIf = countSyllables> {{line.syllables}} </b> 
 							<br>
 						</span>
-						<br>
 					</p>
-					<p><br></p>
 				</span>
 			</div>
 			<!--We always display the line number for each line-->
@@ -66,7 +65,6 @@
 								<br>
 							</span>
 						</p>
-						<p><br></p>
 				</span>
 			</div>
 		</div>
