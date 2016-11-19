@@ -5,7 +5,7 @@
 body {
   width: 1000px;
   margin: auto;
-  height: 1000px;
+  height: fit-content;
 }
 h1 {
     text-align: center;
@@ -50,6 +50,9 @@ p, b {
   margin-right: auto;
 }
 
+#play-name{
+  text-transform: uppercase;
+}
 #characters{
   float: left;
   width: 12%;
@@ -63,6 +66,7 @@ p, b {
   float: left;
   width: 70%;
   margin-left: 10px;
+  word-wrap: break-word;
 }
 
 #syllable-count{
@@ -89,7 +93,7 @@ p, b {
 
 #box {
   width: fit-content;
-  height: 100px;
+  height: fit-content;
   background: white;
   overflow: hidden;
   -webkit-box-shadow: -6px 10px 6px -6px #777;
@@ -100,19 +104,23 @@ p, b {
 	        box-shadow: -3px 5px 6px -6px #777, 
                        3px 5px 6px -6px #777, 
                        0px 1px 10px -6px #777;
-  
   margin-left: 660px;
   margin-right: auto;
   position: fixed;
 }
-
+#left{
+    float:left;
+    width:100px;
+    height:200px;
+    background:yellow;
+}
 #navigation{
   display: flex;
   width: fit-content;
   margin: fit-content;
 }
 #checkboxes{
-  width: fit-content;
+  width: 100%;
 }
 
 .feature-checkbox-label {
@@ -128,7 +136,16 @@ p, b {
   font-size: 10px;
   text-shadow: 0 1px 0 rgba(black, .1);
 }
+
+#progressbar {
+  width: 100%;
+}
 @keyframes drift {
   from { transform: rotate(0deg); }
   from { transform: rotate(360deg); }
 }
+
+#toggle-feature{
+  width: 100%;
+}
+

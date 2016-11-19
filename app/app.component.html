@@ -1,4 +1,6 @@
+
 <body>
+	<h1> A SHAKESPEARE WEBSITE </h1>
 	<div>
 		<label id="plays" for="play-dropdown"> </label>
 		<select [(ngModel)]="currentPlay" id="play-dropdown" ngChange="loadNewPlay()" required>
@@ -7,7 +9,9 @@
 			</option>
 		</select>
 	</div>
+
 	<h1> {{currentPlay.title}} </h1>
+	
 	<span *ngFor="let p of play">
 		<div id = "reader">
 			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
@@ -27,18 +31,14 @@
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 						<span *ngFor="let line of speech.lines">
 							<p>
-								<span *ngFor="let run of line.runs"><span *ngIf="!displayScansion">{{run.text}}</span></span>
-									<!--<span *ngIf="displayScansion">
-										<span *ngIf="run.bold === 'true'">
-											<b>{{run.text}}</b>
-										</span>
-										<span *ngIf="run.bold === 'false'">
-											{{run.text}}
-										</span>
-									</span>
-									</span>
-									-->
-								
+								<!-- Comment tags necessary to eliminate whitespace when displaying -->
+								<span *ngFor="let run of line.runs"><!--
+									--><span *ngIf="!displayScansion">{{run.text}}</span><!--
+									--><span *ngIf="displayScansion"><!--
+										--><span *ngIf="run.bold === 'true'"><b>{{run.text}}</b></span><!--
+										--><span *ngIf="run.bold === 'false'">{{run.text}}</span><!--
+									--></span><!--
+								--></span>
 							</p>
 						</span>
 						<p><br></p>
@@ -54,6 +54,7 @@
 						</span>
 						<br>
 					</p>
+					<p><br></p>
 				</span>
 			</div>
 			<!--We always display the line number for each line-->
@@ -73,13 +74,13 @@
 	
 	<!--This div contains all navigation options and analysis features-->
 	<div id = "box">
-		<!--<div>
+		<div>
 			<select [(ngModel)]="currentActScene" id="dropdown" required>
 				<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
 					Act {{actScene.act}}, Scene {{actScene.scene}}
 				</option>
 			</select>
-		</div>-->
+		</div>
 		<div id = "navigation">
 			<div id = "nav-button-1">
 				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
@@ -97,12 +98,15 @@
 			</div>
 		</div>
 		<div id = "checkboxes">
+			<div class = "toggle-feature">
 				<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
 				<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
-			
+			</div>
+			<div class = "toggle-feature">
 				<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
 				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()"/>
-			
+			</div>
 		</div>
+		<progress id="progressbar" value="0" max="100"></progress>
 	</div>
 </body>
