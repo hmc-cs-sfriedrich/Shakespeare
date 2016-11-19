@@ -14,7 +14,7 @@ def isOneCapLetter(string):
     return len(string) == 1 and string[0].isupper()
     
 def naiiveSyllableCount(word):
-    return len(''.join(" x"[c in "aeiouy"] for c in word.rstrip('e')).split())
+    return len(''.join(" x"[c in "aeiouy"] for c in word.decode('utf8').rstrip('e')).split())
     
 def titleForSave(title):
     return '-'.join(title.split()).lower()
@@ -116,7 +116,7 @@ def parsePlay(playName):
                     
                     character = ''
                     for j in range(i):
-                        character += docRuns[j].text.encode('utf-8')
+                        character += str(docRuns[j].text.encode('utf-8'))
                     speech['character'] = character.strip()
                     
                     newSpeech = True
@@ -164,10 +164,10 @@ def parsePlay(playName):
                 # Space/punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
-                if docRunText.isspace() or docRunText in string.punctuation:
-                    fullText += docRunTextUnstripped
-                elif not docRunText.isdigit() and not(docRun.italic and not docRun.bold): 
-                    fullText += docRunTextUnstripped
+                if str(docRunText).isspace() or str(docRunText) in string.punctuation:
+                    fullText += str(docRunTextUnstripped)
+                elif not str(docRunText).isdigit() and not(docRun.italic and not docRun.bold): 
+                    fullText += str(docRunTextUnstripped)
                     run = {runNumber: numRuns}
                     # Bolded syllable case
                     if docRun.font.bold != None:
@@ -182,9 +182,9 @@ def parsePlay(playName):
                     else:
                         run['italic'] = 'false'
                     # Write out the run's text tot he json
-                    run['text'] = docRunTextUnstripped
+                    run['text'] = str(docRunTextUnstripped)
                     if len(runs) > 1 and run['bold'] == runs[-1]['bold'] and run['italic'] == runs[-1]['italic']:
-                        runs[-1]['text'] += docRunText
+                        runs[-1]['text'] += str(docRunText)
                     else: 
                         numRuns += 1
                         runs.append(run)
@@ -195,10 +195,10 @@ def parsePlay(playName):
              #   return
             
             words = fullText.split()
-            words = [stripUnicode(word) for word in words]
+            words = [stripUnicode(str.encode(word, 'utf8')) for word in words]
             
             if 'colloquial' in words:
-                print lineIterator
+                print(lineIterator)
             
             # If the naiive count isn't close enough to the number of runs
             # it means that it was prose, which is indicated as having
@@ -211,7 +211,7 @@ def parsePlay(playName):
         else:
             continue
     
-    with open("../app/" + titleForSave(title) + '.json', 'w+') as outfile:
+    with open(titleForSave(title) + '.json', 'w+') as outfile:
         json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 def main():
