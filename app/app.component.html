@@ -74,13 +74,6 @@
 	
 	<!--This div contains all navigation options and analysis features-->
 	<div id = "box">
-		<div>
-			<select [(ngModel)]="currentActScene" id="dropdown" required>
-				<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
-					Act {{actScene.act}}, Scene {{actScene.scene}}
-				</option>
-			</select>
-		</div>
 		<div id = "navigation">
 			<div id = "nav-button-1">
 				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
