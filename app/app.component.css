@@ -5,7 +5,7 @@
 body {
   width: 1000px;
   margin: auto;
-  height: 2000px;
+  height: fit-content;
 }
 h1 {
     text-align: center;
@@ -106,7 +106,7 @@ p, b {
                        0px 1px 10px -6px #777;
   margin-left: 660px;
   margin-right: auto;
-  /*position: fixed;*/
+  position: fixed;
 }
 #left{
     float:left;
