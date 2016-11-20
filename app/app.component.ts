@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
 
 	loadNewPlay() {
 		console.log("Hello!!");
+		console.log(this.currentPlay.fileName);
 		this.getPlay(this.currentPlay.fileName);
 	}
 
@@ -58,7 +59,6 @@ export class AppComponent implements OnInit {
 
 	initPlay(play: string) {
 		this.play = play;
-		console.log(play[0].play);
 		var sceneIndex: number = 0;
 		for (let act of play[0].play.acts) {
 			for (let scene of act.scenes) {
