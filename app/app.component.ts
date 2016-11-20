@@ -46,8 +46,9 @@ export class AppComponent implements OnInit {
 	// Hardcode list of plays and arbitrary select first for view
 	initPlays() {
 		this.plays = [];
-		this.plays.push(new Play("Macbeth", "macbeth", 0));
-		this.plays.push(new Play("Not A Play", "not-a-play", 1));
+		this.plays.push(new Play("Macbeth", "macbeth"));
+		this.plays.push(new Play("Hamlet", "by-william-shakespeare"));
+		this.plays.push(new Play("Not A Play", "not-a-play"));
 		this.currentPlay = this.plays[0];
 	}
 
