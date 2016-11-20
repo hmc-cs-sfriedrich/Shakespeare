@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
 		this.getPlay(this.currentPlay.fileName);
 	}
 
+	// Hardcode list of plays and arbitrary select first for view
 	initPlays() {
 		this.plays = [];
 		this.plays.push(new Play("Macbeth", "macbeth", 0));
