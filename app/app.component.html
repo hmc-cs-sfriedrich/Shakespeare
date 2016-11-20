@@ -48,7 +48,7 @@
 				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "syllable-text">
 						<span *ngFor="let line of speech.lines">
-							<b id = "syllable-text" *ngIf = countSyllables> {{line.syllables}} </b> 
+							<b id = "syllable-text" *ngIf = "countSyllables && line.syllables != -1"> {{line.syllables}} </b> 
 							<br>
 						</span>
 					</p>
