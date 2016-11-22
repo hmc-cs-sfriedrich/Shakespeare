@@ -33,15 +33,15 @@
 							<p>
 								<!-- Comment tags necessary to eliminate whitespace when displaying -->
 								<span *ngFor="let run of line.runs"><!--
-									--><span *ngIf="!displayScansion && !highlightVowels">{{run.text}}</span><!--
+									--><span *ngIf="!displayScansion && !highlight">{{run.text}}</span><!--
 									--><span *ngIf="displayScansion"><!--
 										--><span *ngIf="run.bold === 'true'"><b>{{run.text}}</b></span><!--
 										--><span *ngIf="run.bold === 'false'" style="color:#aaaaaa">{{run.text}}</span><!--
 									--></span><!--
-									--><span *ngIf="highlightVowels"><!--
+									--><span *ngIf="highlight"><!--
 										--><span *ngFor="let char of run.text | runChars"><!--
-											--><span *ngIf="isVowel(char)"><b>{{char}}</b></span><!--
-											--><span *ngIf="!isVowel(char)" style="color#aaaaaa">{{char}}</span><!--
+											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (!isVowel(char) && highlightWhat == 'consonants')"><b>{{char}}</b></span><!--
+											--><span *ngIf="(!isVowel(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')" style="color:#aaaaaa">{{char}}</span><!--
 									   --></span><!--
 									--></span><!--
 								--></span>
@@ -99,11 +99,16 @@
 			</div>
 			<div class = "toggle-feature">
 				<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
-				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()" [disabled]="highlightVowels"/>
+				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()" [disabled]="highlight"/>
 			</div>
 			<div class = "toggle-feature">
-				<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels</label>
-				<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlightVowels()" [disabled]="displayScansion"/>
+				<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels/Consonants</label>
+				<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlight()" [disabled]="displayScansion"/>
+				<br>
+				<span *ngIf="highlight">
+					<input type="radio" name="highlight" id="vowels" value="vowels" [(ngModel)]="highlightWhat" checked> <label for="vowels">Vowels</label>
+					<input type="radio" name="highlight" id="consonants" value="consonants" [(ngModel)]="highlightWhat"> <label for="consonants">Consonants</label>
+				 </span>
 			</div>
 		</div>
 		<progress id="progressbar" value="0" max="100"></progress>

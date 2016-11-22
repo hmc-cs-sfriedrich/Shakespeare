@@ -19,7 +19,7 @@ import { Observable }     from 'rxjs/Observable';
 
 @Injectable()
 export class AppComponent implements OnInit {
-	highlightVowels: boolean;
+	highlight: boolean;
 	countSyllables: boolean;
 	displayScansion: boolean;
 	prevCharacter: string;
@@ -29,6 +29,7 @@ export class AppComponent implements OnInit {
 	currentActScene: ActScene;
 	plays: Play[];
 	currentPlay: Play;
+	highlightWhat: string;
 
 	constructor(private playService: PlayService) {}
 
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
 		this.initPlays();
 		this.getPlay(this.currentPlay.fileName);
 		this.actScenes = [];
+		this.highlightWhat = "vowels";
   	}
 
 	loadNewPlay() {
@@ -79,8 +81,8 @@ export class AppComponent implements OnInit {
 		this.displayScansion = !this.displayScansion;
 	}
 
-	toggleHighlightVowels(): void {
-		this.highlightVowels = !this.highlightVowels;
+	toggleHighlight(): void {
+		this.highlight = !this.highlight;
 	}
 
 	toPreviousScene(): void {
