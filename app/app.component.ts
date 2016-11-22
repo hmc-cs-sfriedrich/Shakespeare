@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play/play.service';
 import { ActScene } from './play/actscene';
+import { Play } from './play/play';
 
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -23,19 +24,33 @@ export class AppComponent implements OnInit {
 	prevCharacter: string;
 	play: string;
 	errorMessage: string;
-	act: number;
-	scene: number;
 	actScenes: ActScene[];
 	currentActScene: ActScene;
+	plays: Play[];
+	currentPlay: Play;
 
 	constructor(private playService: PlayService) {}
 
 	ngOnInit() {
-		this.getPlay("macbeth");
+		this.initPlays();
+		this.getPlay(this.currentPlay.fileName);
 		this.actScenes = [];
-		this.act = 0;
-		this.scene = 0;
   	}
+
+	loadNewPlay() {
+		console.log("Hello!!");
+		console.log(this.currentPlay.fileName);
+		this.getPlay(this.currentPlay.fileName);
+	}
+
+	// Hardcode list of plays and arbitrary select first for view
+	initPlays() {
+		this.plays = [];
+		this.plays.push(new Play("Macbeth", "macbeth"));
+		this.plays.push(new Play("Hamlet", "by-william-shakespeare"));
+		this.plays.push(new Play("Not A Play", "not-a-play"));
+		this.currentPlay = this.plays[0];
+	}
 
 	getPlay(play: string) {
 		this.playService.getPlay(play)

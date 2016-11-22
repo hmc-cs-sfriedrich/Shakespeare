@@ -1,5 +1,15 @@
 <body>
-	<h1> A SHAKESPEARE WEBSITE </h1>
+	<div>
+		<label id="plays" for="play-dropdown"> </label>
+		<select [(ngModel)]="currentPlay" id="play-dropdown" (ngModelChange)="loadNewPlay()">
+			<option *ngFor = "let play of plays" [ngValue]="play">
+				{{play.title}}
+			</option>
+		</select>
+	</div>
+
+	<h1> {{currentPlay.title}} </h1>
+	
 	<span *ngFor="let p of play">
 		<div id = "reader">
 			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
@@ -7,9 +17,11 @@
 			<div id = "characters">
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "character">{{speech.character}}</p>
-					<!--Insert a line-break for every line of speech for correct spacing-->
-					<span *ngFor="let line of speech.lines">
-						<p><br></p>
+					<!--Insert a line-break for every line of speech (minus 1 because the character name takes up a line) for correct spacing-->
+					<span *ngFor="let line of speech.lines; let i = index">
+						<template [ngIf]="i>0">
+							<p><br></p>
+						</template>
 					</span>
 				</span>
 				<p><br></p>
@@ -19,29 +31,24 @@
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 						<span *ngFor="let line of speech.lines">
 							<p>
-								<span *ngFor="let run of line.runs"><span *ngIf="!displayScansion">{{run.text}}</span></span>
-									<!--<span *ngIf="displayScansion">
-										<span *ngIf="run.bold === 'true'">
-											<b>{{run.text}}</b>
-										</span>
-										<span *ngIf="run.bold === 'false'">
-											{{run.text}}
-										</span>
-									</span>
-									</span>
-									-->
-								
+								<!-- Comment tags necessary to eliminate whitespace when displaying -->
+								<span *ngFor="let run of line.runs"><!--
+									--><span *ngIf="!displayScansion">{{run.text}}</span><!--
+									--><span *ngIf="displayScansion"><!--
+										--><span *ngIf="run.bold === 'true'"><b>{{run.text}}</b></span><!--
+										--><span *ngIf="run.bold === 'false'" style="color:#aaaaaa">{{run.text}}</span><!--
+									--></span><!--
+								--></span>
 							</p>
 						</span>
-						<p><br></p>
 				</span>
 			</div>
 			<!--We display syllable counts for each line only if countSyllables is checked-->
 			<div id = "syllable-count">
-				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "syllable-text">
 						<span *ngFor="let line of speech.lines">
-							<b id = "syllable-text" *ngIf = countSyllables> {{line.syllables}} </b> 
+							<b id = "syllable-text" *ngIf = "countSyllables && line.syllables != -1"> {{line.syllables}} </b> 
 							<br>
 						</span>
 					</p>
@@ -49,14 +56,13 @@
 			</div>
 			<!--We always display the line number for each line-->
 			<div id = "line-numbers">
-				<span *ngFor="let speech of p.play.acts[act].scenes[scene].speeches">
+				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 						<p id = "line-number-text">
 							<span *ngFor="let line of speech.lines">
 								{{line.lineNumber}}
 								<br>
 							</span>
 						</p>
-						<p><br></p>
 				</span>
 			</div>
 		</div>
@@ -64,13 +70,6 @@
 	
 	<!--This div contains all navigation options and analysis features-->
 	<div id = "box">
-		<!--<div>
-			<select [(ngModel)]="currentActScene" id="dropdown" required>
-				<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
-					Act {{actScene.act}}, Scene {{actScene.scene}}
-				</option>
-			</select>
-		</div>-->
 		<div id = "navigation">
 			<div id = "nav-button-1">
 				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
@@ -88,12 +87,15 @@
 			</div>
 		</div>
 		<div id = "checkboxes">
+			<div class = "toggle-feature">
 				<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
 				<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
-			
+			</div>
+			<div class = "toggle-feature">
 				<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
 				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()"/>
-			
+			</div>
 		</div>
+		<progress id="progressbar" value="0" max="100"></progress>
 	</div>
 </body>
