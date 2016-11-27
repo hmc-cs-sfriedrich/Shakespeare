@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play/play.service';
 import { ActScene } from './play/actscene';
 import { Play } from './play/play';
+import { ChangeRunPipe } from './changerun.pipe';
 
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
@@ -46,8 +47,8 @@ export class AppComponent implements OnInit {
 	// Hardcode list of plays and arbitrary select first for view
 	initPlays() {
 		this.plays = [];
-		this.plays.push(new Play("Macbeth", "macbeth", 0));
-		this.plays.push(new Play("Not A Play", "not-a-play", 1));
+		this.plays.push(new Play("Macbeth", "macbeth"));
+		this.plays.push(new Play("Hamlet", "by-william-shakespeare"));
 		this.currentPlay = this.plays[0];
 	}
 
@@ -78,6 +79,10 @@ export class AppComponent implements OnInit {
 		this.displayScansion = !this.displayScansion;
 	}
 
+	toggleHighlightVowels(): void {
+		this.highlightVowels = !this.highlightVowels;
+	}
+
 	toPreviousScene(): void {
 		// Only attempt to navigate back a scene if NOT at first scene in first act
 		if (this.currentActScene.sceneIndex != 0) {
@@ -90,5 +95,9 @@ export class AppComponent implements OnInit {
 		if (this.currentActScene.sceneIndex < this.actScenes.length - 1) {
 			this.currentActScene = this.actScenes[this.currentActScene.sceneIndex + 1];
 		}
+	}
+
+	isVowel(char: string): boolean {
+		return (char == "a") || (char == "e") || (char == "i") || (char == "o") || (char == "u");
 	}
 }
