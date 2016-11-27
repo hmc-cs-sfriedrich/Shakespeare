@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play/play.service';
 import { ActScene } from './play/actscene';
 import { Play } from './play/play';
-import { ChangeRunPipe } from './changerun.pipe';
 
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
