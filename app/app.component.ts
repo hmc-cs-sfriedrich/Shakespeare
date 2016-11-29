@@ -18,7 +18,7 @@ import { Observable }     from 'rxjs/Observable';
 
 @Injectable()
 export class AppComponent implements OnInit {
-	highlightVowels: boolean;
+	highlight: boolean;
 	countSyllables: boolean;
 	displayScansion: boolean;
 	prevCharacter: string;
@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
 	currentActScene: ActScene;
 	plays: Play[];
 	currentPlay: Play;
+	highlightWhat: string;
 
 	constructor(private playService: PlayService) {}
 
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
 		this.initPlays();
 		this.getPlay(this.currentPlay.fileName);
 		this.actScenes = [];
+		this.highlightWhat = "vowels";
   	}
 
 	loadNewPlay() {
@@ -48,7 +50,6 @@ export class AppComponent implements OnInit {
 		this.plays = [];
 		this.plays.push(new Play("Macbeth", "macbeth"));
 		this.plays.push(new Play("Hamlet", "by-william-shakespeare"));
-		this.plays.push(new Play("Not A Play", "not-a-play"));
 		this.currentPlay = this.plays[0];
 	}
 
@@ -79,6 +80,10 @@ export class AppComponent implements OnInit {
 		this.displayScansion = !this.displayScansion;
 	}
 
+	toggleHighlight(): void {
+		this.highlight = !this.highlight;
+	}
+
 	toPreviousScene(): void {
 		// Only attempt to navigate back a scene if NOT at first scene in first act
 		if (this.currentActScene.sceneIndex != 0) {
@@ -91,5 +96,9 @@ export class AppComponent implements OnInit {
 		if (this.currentActScene.sceneIndex < this.actScenes.length - 1) {
 			this.currentActScene = this.actScenes[this.currentActScene.sceneIndex + 1];
 		}
+	}
+
+	isVowel(char: string): boolean {
+		return (char == "a") || (char == "e") || (char == "i") || (char == "o") || (char == "u");
 	}
 }
