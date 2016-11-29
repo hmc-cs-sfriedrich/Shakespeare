@@ -14,7 +14,7 @@ def isOneCapLetter(string):
     return len(string) == 1 and string[0].isupper()
     
 def naiiveSyllableCount(word):
-    return len(''.join(" x"[c in "aeiouy"] for c in word.decode('utf8').rstrip('e')).split())
+    return len(''.join(" x"[c in "aeiouy"] for c in word.rstrip('e')).split())
     
 def titleForSave(title):
     return '-'.join(title.split()).lower()
@@ -26,6 +26,21 @@ def stripUnicode(docRunTextUnstripped):
     docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201d','"')
     docRunTextUnstripped = docRunTextUnstripped.encode('utf-8')
     return docRunTextUnstripped
+    
+def endLine(line, fullText, numRuns):
+    line['lineText'] = fullText
+
+    words = fullText.split()
+    words = [stripUnicode(word) for word in words]
+            
+    # If the naiive count isn't close enough to the number of runs
+    # it means that it was prose, which is indicated as having
+    # syllable count of -1
+    naiiveCount = sum([naiiveSyllableCount(word) for word in words])
+    if abs(naiiveCount - numRuns) > 3:
+        numRuns = -1
+    line['syllables'] = numRuns - 1
+    return line
 
 
 def parsePlay(playName):
@@ -116,7 +131,7 @@ def parsePlay(playName):
                     
                     character = ''
                     for j in range(i):
-                        character += str(docRuns[j].text.encode('utf-8'))
+                        character += docRuns[j].text.encode('utf-8')
                     speech['character'] = character.strip()
                     
                     newSpeech = True
@@ -164,10 +179,28 @@ def parsePlay(playName):
                 # Space/punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
-                if str(docRunText).isspace() or str(docRunText) in string.punctuation:
-                    fullText += str(docRunTextUnstripped)
-                elif not str(docRunText).isdigit() and not(docRun.italic and not docRun.bold): 
-                    fullText += str(docRunTextUnstripped)
+                if docRunText.isspace() or (not docRunText is '$' and docRunText in string.punctuation):
+                    fullText += docRunTextUnstripped
+                    continue
+                
+                # If there's a $ sign, that was manually inserted by a developer
+                # in the .docx to signify a new line where the pdf to docx converter
+                # failed to recognize
+                if docRunText[0] is '$':
+                    lines[-1] = endLine(line, fullText, numRuns)
+                    numLines += 1
+                    
+                    line = {lineNumber: numLines}
+                    lines.append(line)
+            
+                    runs = []
+                    line['runs'] = runs
+                    numRuns = 1
+                    docRunTextUnstripped = docRunTextUnstripped[1:]
+                    docRunText = docRunTextUnstripped.strip()
+                    fullText = ''
+                if len(docRunText) > 0 and not docRunText.isdigit() and not(docRun.italic and not docRun.bold) and not docRunText is '$': 
+                    fullText += docRunTextUnstripped
                     run = {runNumber: numRuns}
                     # Bolded syllable case
                     if docRun.font.bold != None:
@@ -182,36 +215,19 @@ def parsePlay(playName):
                     else:
                         run['italic'] = 'false'
                     # Write out the run's text tot he json
-                    run['text'] = str(docRunTextUnstripped)
+                    run['text'] = docRunTextUnstripped
                     if len(runs) > 1 and run['bold'] == runs[-1]['bold'] and run['italic'] == runs[-1]['italic']:
                         runs[-1]['text'] += str(docRunText)
                     else: 
                         numRuns += 1
                         runs.append(run)
-            line['lineText'] = fullText
             
-           # if 'will mingle' in fullText:
-            #    print lineIterator
-             #   return
-            
-            words = fullText.split()
-            words = [stripUnicode(str.encode(word, 'utf8')) for word in words]
-            
-            if 'colloquial' in words:
-                print(lineIterator)
-            
-            # If the naiive count isn't close enough to the number of runs
-            # it means that it was prose, which is indicated as having
-            # syllable count of -1
-            naiiveCount = sum([naiiveSyllableCount(word) for word in words])
-            if abs(naiiveCount - numRuns) > 3:
-                numRuns = -1
-            line['syllables'] = numRuns
+            lines[-1] = endLine(line, fullText, numRuns)
             numLines += 1
         else:
             continue
     
-    with open(titleForSave(title) + '.json', 'w+') as outfile:
+    with open("../app/" + titleForSave(title) + '.json', 'w+') as outfile:
         json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 def main():
