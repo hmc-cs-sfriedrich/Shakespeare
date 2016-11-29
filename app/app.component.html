@@ -40,8 +40,9 @@
 									--></span><!--
 									--><span *ngIf="highlight"><!--
 										--><span *ngFor="let char of run.text | runChars"><!--
-											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (!isVowel(char) && highlightWhat == 'consonants')"><b>{{char}}</b></span><!--
-											--><span *ngIf="(!isVowel(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')" style="color:#aaaaaa">{{char}}</span><!--
+											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (isConsonant(char) && highlightWhat == 'consonants')"><b>{{char}}</b></span><!--
+											--><span *ngIf="(isConsonant(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')" style="color:#aaaaaa">{{char}}</span><!--
+											--><span *ngIf="(!isVowel(char) && !isConsonant(char))">{{char}}</span><!--
 									   --></span><!--
 									--></span><!--
 								--></span>
