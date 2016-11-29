@@ -12,7 +12,7 @@
 	
 	<span *ngFor="let p of play">
 		<div id = "reader">
-			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
+			<h2> Act {{roman(currentActScene.act)}} Scene {{roman(currentActScene.scene)}}</h2>
 			<!--We list each character who speaks in this div-->
 			<div id = "characters">
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
@@ -85,7 +85,7 @@
 				<label id="features" for="dropdown"> </label>
 				<select [(ngModel)]="currentActScene" id="dropdown" required>
 					<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
-						Act {{actScene.act}}, Scene {{actScene.scene}}
+						Act {{roman(actScene.act)}}, Scene {{roman(actScene.scene)}}
 					</option>
 				</select>
 			</div>
