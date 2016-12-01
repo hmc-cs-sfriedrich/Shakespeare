@@ -2,7 +2,6 @@ import docx
 import json
 import os
 import string
-import re
 
 runNumber = 'runNumber'
 lineNumber = 'lineNumber'
@@ -38,7 +37,7 @@ def endLine(line, fullText, numRuns):
     # syllable count of -1
     naiiveCount = sum([naiiveSyllableCount(word) for word in words])
     if abs(naiiveCount - numRuns) > 3:
-        numRuns = -1
+        numRuns = 0
     line['syllables'] = numRuns - 1
     return line
 
