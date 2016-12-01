@@ -12,8 +12,8 @@
 	
 	<span *ngFor="let p of play">
 		<div id = "reader">
-			<h2> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
-			<!--We list each character who speaks in this div-->
+			<div><h2 id = "act-scene"> Act {{currentActScene.act}} Scene {{currentActScene.scene}}</h2>
+			</div><!--We list each character who speaks in this div-->
 			<div id = "characters">
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "character">{{speech.character}}</p>
@@ -36,12 +36,12 @@
 									--><span *ngIf="!displayScansion && !highlight">{{run.text}}</span><!--
 									--><span *ngIf="displayScansion"><!--
 										--><span *ngIf="run.bold === 'true'"><b>{{run.text}}</b></span><!--
-										--><span *ngIf="run.bold === 'false'" style="color:#aaaaaa">{{run.text}}</span><!--
+										--><span id = "unstressed" class = "fadeout" *ngIf="run.bold === 'false'">{{run.text}}</span><!--
 									--></span><!--
 									--><span *ngIf="highlight"><!--
 										--><span *ngFor="let char of run.text | runChars"><!--
 											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (!isVowel(char) && highlightWhat == 'consonants')"><b>{{char}}</b></span><!--
-											--><span *ngIf="(!isVowel(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')" style="color:#aaaaaa">{{char}}</span><!--
+											--><span id = "unhighlighted" class = "fadeout" *ngIf="(!isVowel(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')">{{char}}</span><!--
 									   --></span><!--
 									--></span><!--
 								--></span>
@@ -71,46 +71,48 @@
 						</p>
 				</span>
 			</div>
+			<div id = "box">
+			<div id = "navigation">
+				<div id = "previous" class = "nav-buttons">
+					<input type="button" value="<" (click)="toPreviousScene()" />
+				</div>
+				<div id = "dropdown-menu">
+					<label id="features" for="dropdown"> </label>
+					<select [(ngModel)]="currentActScene" id="dropdown" required>
+						<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
+							Act {{actScene.act}}, Scene {{actScene.scene}}
+						</option>
+					</select>
+				</div>
+				<div id = "forward" class = "nav-buttons">
+					<input type="button" value=">" (click)="toNextScene()" />
+				</div>
+			</div>
+			<div id = "checkboxes">
+				<div class = "toggle-feature">
+					<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
+					<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
+				</div>
+				<div class = "toggle-feature">
+					<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
+					<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()" [disabled]="highlight"/>
+				</div>
+				<div class = "toggle-feature">
+					<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels/Consonants</label>
+					<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlight()" [disabled]="displayScansion"/>
+					<br>
+					<span *ngIf="highlight">
+						<input class ="radio" type="radio" name="highlight" id="vowels" value="vowels" [(ngModel)]="highlightWhat" checked> <label for="vowels">Vowels</label>
+						<input class ="radio" type="radio" name="highlight" id="consonants" value="consonants" [(ngModel)]="highlightWhat"> <label for="consonants">Consonants</label>
+					</span>
+				</div>
+			</div>
+			<progress id="progressbar" value="0" max="100"></progress>
 		</div>
+		</div>
+		
 	</span>
 	
 	<!--This div contains all navigation options and analysis features-->
-	<div id = "box">
-		<div id = "navigation">
-			<div id = "nav-button-1">
-				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
-			</div>
-			<div id = "dropdown-menu">
-				<label id="features" for="dropdown"> </label>
-				<select [(ngModel)]="currentActScene" id="dropdown" required>
-					<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
-						Act {{actScene.act}}, Scene {{actScene.scene}}
-					</option>
-				</select>
-			</div>
-			<div id = "nav-button-2">
-				<form name = "hello"><input type="button" value="Next" (click)="toNextScene()" /></form>
-			</div>
-		</div>
-		<div id = "checkboxes">
-			<div class = "toggle-feature">
-				<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
-				<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
-			</div>
-			<div class = "toggle-feature">
-				<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
-				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()" [disabled]="highlight"/>
-			</div>
-			<div class = "toggle-feature">
-				<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels/Consonants</label>
-				<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlight()" [disabled]="displayScansion"/>
-				<br>
-				<span *ngIf="highlight">
-					<input type="radio" name="highlight" id="vowels" value="vowels" [(ngModel)]="highlightWhat" checked> <label for="vowels">Vowels</label>
-					<input type="radio" name="highlight" id="consonants" value="consonants" [(ngModel)]="highlightWhat"> <label for="consonants">Consonants</label>
-				 </span>
-			</div>
-		</div>
-		<progress id="progressbar" value="0" max="100"></progress>
-	</div>
+	
 </body>
