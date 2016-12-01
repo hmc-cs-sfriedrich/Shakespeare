@@ -175,13 +175,17 @@ def parsePlay(playName):
             fullText = ''
             # Write in runs
             for docRun in docRuns[start:]:
-                # Space/punctuation case
+                # punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
-                if docRunText.isspace() or (not docRunText is '$' and docRunText in string.punctuation):
+                if not docRunText is '$' and docRunText in string.punctuation:
                     fullText += docRunTextUnstripped
                     continue
-                
+                # Space case
+                if docRunText.isspace():
+                    fullText += docRunTextUnstripped
+                    runs[-1]['text'] += docRunText
+                    continue
                 # If there's a $ sign, that was manually inserted by a developer
                 # in the .docx to signify a new line where the pdf to docx converter
                 # failed to recognize
