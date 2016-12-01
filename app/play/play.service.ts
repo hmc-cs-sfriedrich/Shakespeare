@@ -15,7 +15,8 @@ export class PlayService {
 
   constructor (private http: Http) {}
 
-  getPlay (play: string): Observable<string> { //Will become list of Scenes instead
+  // Retrieves the json for a specific play
+  getPlay (play: string): Observable<string> {
     let playUrl = "app/" + play + ".json";
     return this.http.get(playUrl)
                     .map(this.extractData)
@@ -36,10 +37,3 @@ export class PlayService {
     return Observable.throw(errMsg);
   }
 }
-
-
-/*
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/

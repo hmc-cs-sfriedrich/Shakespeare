@@ -1,5 +1,6 @@
 <body>
-	<div>
+	<!-- The play dropdown-->
+	<div id = "play-dropdown-div">
 		<label id="plays" for="play-dropdown"> </label>
 		<select [(ngModel)]="currentPlay" id="play-dropdown" (ngModelChange)="loadNewPlay()">
 			<option *ngFor = "let play of plays" [ngValue]="play">
@@ -10,6 +11,8 @@
 
 	<h1> {{currentPlay.title}} </h1>
 	
+	<!-- Even though we don't use the loop variable p, this loop is oddly
+		 necessary in order to read through play[0].play... Not doing so yields errors-->
 	<span *ngFor="let p of play">
 		<div id = "reader">
 			<h2> Act {{roman(currentActScene.act)}} Scene {{roman(currentActScene.scene)}}</h2>
@@ -52,7 +55,7 @@
 			</div>
 			<!--We display syllable counts for each line only if countSyllables is checked-->
 			<div id = "syllable-count">
-				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "syllable-text">
 						<span *ngFor="let line of speech.lines">
 							<b id = "syllable-text" *ngIf = "countSyllables && line.syllables != -1"> {{line.syllables}} </b> 
@@ -63,7 +66,7 @@
 			</div>
 			<!--We always display the line number for each line-->
 			<div id = "line-numbers">
-				<span *ngFor="let speech of p.play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 						<p id = "line-number-text">
 							<span *ngFor="let line of speech.lines">
 								{{line.lineNumber}}
@@ -78,9 +81,11 @@
 	<!--This div contains all navigation options and analysis features-->
 	<div id = "box">
 		<div id = "navigation">
+			<!-- Previous scene -->
 			<div id = "nav-button-1">
 				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
 			</div>
+			<!-- Scene dropdown -->
 			<div id = "dropdown-menu">
 				<label id="features" for="dropdown"> </label>
 				<select [(ngModel)]="currentActScene" id="dropdown" required>
@@ -89,19 +94,23 @@
 					</option>
 				</select>
 			</div>
+			<!-- Next scene -->
 			<div id = "nav-button-2">
 				<form name = "hello"><input type="button" value="Next" (click)="toNextScene()" /></form>
 			</div>
 		</div>
 		<div id = "checkboxes">
+			<!-- Count syllables -->
 			<div class = "toggle-feature">
 				<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
 				<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
 			</div>
+			<!-- Display Scansion -->
 			<div class = "toggle-feature">
 				<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
 				<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()" [disabled]="highlight"/>
 			</div>
+			<!-- Highlight vowels/consonants -->
 			<div class = "toggle-feature">
 				<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels/Consonants</label>
 				<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlight()" [disabled]="displayScansion"/>
@@ -112,6 +121,7 @@
 				 </span>
 			</div>
 		</div>
+		
 		<progress id="progressbar" value="0" max="100"></progress>
 	</div>
 </body>

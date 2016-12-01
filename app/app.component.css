@@ -27,8 +27,7 @@ p, b {
   color: black;
 }
 
-
-
+/* The div surrounding the characters, text, syllable counts, and line numbers */
 #reader {
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -53,15 +52,18 @@ p, b {
 #play-name{
   text-transform: uppercase;
 }
+
 #characters{
   float: left;
   width: 18%;
   margin-left: 5px;
   text-align: center;
 }
+
 #character{
   text-decoration: underline;
 }
+
 #text{
   float: left;
   width: 62%;
@@ -80,17 +82,18 @@ p, b {
   width: 5%;
 }
 
-
 #line-number-text{
   color: gray;
   margin-left: 20%;
 }
+
 #syllable-text{
   font-weight: bold;
   color: firebrick;
   margin-left: 20%;
 }
 
+/* The feature div pane */
 #box {
   width: fit-content;
   height: fit-content;
@@ -108,17 +111,20 @@ p, b {
   margin-right: auto;
   position: fixed;
 }
+
 #left{
     float:left;
     width:100px;
     height:200px;
     background:yellow;
 }
+
 #navigation{
   display: flex;
   width: fit-content;
   margin: fit-content;
 }
+
 #checkboxes{
   width: 100%;
 }
