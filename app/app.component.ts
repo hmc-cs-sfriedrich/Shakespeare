@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play/play.service';
-import { ActScene } from './play/actscene';
-import { Play } from './play/play';
+import { ActScene } from './play/objects/actscene';
+import { Play } from './play/objects/play';
 
 import { Injectable }     from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
-
-import { Observable }     from 'rxjs/Observable';
 
 @Component({
   selector: 'my-app',
@@ -21,7 +17,6 @@ export class AppComponent implements OnInit {
 	highlight: boolean;
 	countSyllables: boolean;
 	displayScansion: boolean;
-	prevCharacter: string;
 	play: string;
 	errorMessage: string;
 	actScenes: ActScene[];

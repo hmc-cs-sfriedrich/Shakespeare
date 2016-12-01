@@ -1,11 +1,9 @@
-// Observable Version
 import { Injectable }     from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
 
 import { Observable }     from 'rxjs/Observable';
 
-import './rxjs-operators';
+import './helper_modules/rxjs-operators';
 
 @Injectable()
 export class PlayService {
@@ -17,7 +15,7 @@ export class PlayService {
 
   // Retrieves the json for a specific play
   getPlay (play: string): Observable<string> {
-    let playUrl = "app/" + play + ".json";
+    let playUrl = "app/play/json/" + play + ".json";
     return this.http.get(playUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
@@ -32,7 +30,7 @@ export class PlayService {
   private handleError (error: any) {
     let errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    console.error(errMsg); // log to console instead
+    console.error(errMsg);
     return Observable.throw(errMsg);
   }
 }
