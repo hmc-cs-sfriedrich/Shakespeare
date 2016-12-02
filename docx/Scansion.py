@@ -175,11 +175,18 @@ def parsePlay(playName):
             fullText = ''
             # Write in runs
             for docRun in docRuns[start:]:
+                numInText = False
                 # punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
+                '''
                 #mid line footnote weirdness
-                #for num in '0123456789'
+                for num in string.digits:
+                    if num in docRunText:
+                        numInText = True
+                if numInText:
+                    continue
+                    '''
                 # Double space case
                 if len(runs) > 0 and docRunText.isspace():
                     fullText += docRunTextUnstripped
@@ -243,7 +250,7 @@ def parsePlay(playName):
         else:
             continue
     
-    with open("../app/" + titleForSave(title) + '.json', 'w+') as outfile:
+    with open("../app/play/json/" + titleForSave(title) + '.json', 'w+') as outfile:
         json.dump(output, outfile, sort_keys=True, indent=4, separators=(',',': '))
 
 def main():
