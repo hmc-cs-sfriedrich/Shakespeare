@@ -16,10 +16,11 @@ require('./rxjs-operators');
 var PlayService = (function () {
     function PlayService(http) {
         this.http = http;
-        this.playUrl = 'app/macbeth.json'; // URL to web API
     }
-    PlayService.prototype.getPlay = function () {
-        return this.http.get(this.playUrl)
+    // Retrieves the json for a specific play
+    PlayService.prototype.getPlay = function (play) {
+        var playUrl = "app/" + play + ".json";
+        return this.http.get(playUrl)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -27,9 +28,8 @@ var PlayService = (function () {
         var body = res.json();
         return body.data || {};
     };
+    // Returns a surface-level error message
     PlayService.prototype.handleError = function (error) {
-        // In a real world app, we might use a remote logging infrastructure
-        // We'd also dig deeper into the error to get a better message
         var errMsg = (error.message) ? error.message :
             error.status ? error.status + " - " + error.statusText : 'Server error';
         console.error(errMsg); // log to console instead
@@ -42,9 +42,4 @@ var PlayService = (function () {
     return PlayService;
 }());
 exports.PlayService = PlayService;
-/*
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/ 
 //# sourceMappingURL=play.service.js.map

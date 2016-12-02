@@ -30,6 +30,7 @@ p, b {
   color: black;
 }
 
+/* The div surrounding the characters, text, syllable counts, and line numbers */
 #reader {
   position: relative;
   text-align: left;
@@ -54,15 +55,18 @@ p, b {
 #play-name{
   text-transform: uppercase;
 }
+
 #characters{
   float: left;
   width: 18%;
   margin-left: 5px;
   text-align: center;
 }
+
 #character{
   text-decoration: underline;
 }
+
 #text{
   text-align: left;
   float: left;
@@ -83,11 +87,11 @@ p, b {
   width: 5%;
 }
 
-
 #line-number-text{
   color: gray;
   margin-left: 20%;
 }
+
 #syllable-text{
   font-weight: bold;
   color: firebrick;
@@ -99,6 +103,7 @@ p, b {
             animation: fadein 2s;
 }
 
+/* The feature div pane */
 #box {
   text-align: center;
   width: 20%;
@@ -115,7 +120,7 @@ p, b {
                        0px 1px 10px -6px #777;
   position: fixed;
   top: 50%;
-  margin-top:-210px;
+  margin-top:-175px;
   right:30px;
   background: #FFF;
   border-radius: 5px;
@@ -127,6 +132,7 @@ p, b {
     height:200px;
     background:yellow;
 }
+
 #navigation{
   height: fit-content;
   display: flex;
@@ -185,6 +191,7 @@ p, b {
   text-align: center;
   transition: 0.5s;
 }
+
 #dropdown-menu select{
   background: transparent;
    width: fit-content;
@@ -197,8 +204,7 @@ p, b {
    -webkit-appearance: none;
    transition: 0.5s;
    border: none;
-   margin-left: 3%;
-   margin-right: 3%;
+   margin-right: -10%;
 }
 
 #dropdown-menu:hover, #dropdown-menu:active
@@ -208,7 +214,7 @@ p, b {
   border-color: black;
   background: url("https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png") no-repeat right #EA3D3D;
   background-size: 40px;
-  transition: 0.5s;
+  transition: 0.6s;
 }
 
 #dropdown-menu select:focus {
@@ -216,20 +222,8 @@ p, b {
     transition: 0.5s
 }
 
-
-
-#dropdown-menu:hover, #dropdown-menu:active
-{
-  color: white;
-  border-radius: 20px;
-  border-color: black;
-  background: url("https://www.materialui.co/materialIcons/navigation/arrow_drop_down_white_192x192.png") no-repeat right #EA3D3D;
-  background-size: 40px;
-  transition: 0.5s;
-}
-
  #dropdown-menu select:hover{
-   margin-left: -2%;
+   margin-right: 10%;
    transition: 0.5s;
  }
 
@@ -251,10 +245,6 @@ p, b {
 
 #progressbar {
   width: 100%;
-}
-@keyframes drift {
-  from { transform: rotate(0deg); }
-  from { transform: rotate(360deg); }
 }
 
 #toggle-feature{
@@ -310,7 +300,7 @@ p, b {
   color: #aaa;
 }
 
-#unhighlighted {
+#unhighlighted, #not-letter {
   color: #b3b3b3;
 }
 

@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayService } from './play/play.service';
-import { ActScene } from './play/actscene';
-import { Play } from './play/play';
+import { ActScene } from './play/objects/actscene';
+import { Play } from './play/objects/play';
 
 import { Injectable }     from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
-
-import { Observable }     from 'rxjs/Observable';
 
 @Component({
   selector: 'my-app',
@@ -21,7 +17,6 @@ export class AppComponent implements OnInit {
 	highlight: boolean;
 	countSyllables: boolean;
 	displayScansion: boolean;
-	prevCharacter: string;
 	play: string;
 	errorMessage: string;
 	actScenes: ActScene[];
@@ -30,18 +25,20 @@ export class AppComponent implements OnInit {
 	currentPlay: Play;
 	highlightWhat: string;
 
+	// Inject PlayService
 	constructor(private playService: PlayService) {}
 
 	ngOnInit() {
 		this.initPlays();
 		this.getPlay(this.currentPlay.fileName);
 		this.actScenes = [];
+
+		// When the user selects highlight vowels/consonants, have vowels be default
 		this.highlightWhat = "vowels";
   	}
 
+	// Used for when a user selects a new play from the dropdown
 	loadNewPlay() {
-		console.log("Hello!!");
-		console.log(this.currentPlay.fileName);
 		this.getPlay(this.currentPlay.fileName);
 	}
 
@@ -60,6 +57,7 @@ export class AppComponent implements OnInit {
 				error =>  this.errorMessage = <any>error);
 	}
 
+	// Populate ActScene objects for the dropdown
 	initPlay(play: string) {
 		this.play = play;
 		var sceneIndex: number = 0;
@@ -72,6 +70,7 @@ export class AppComponent implements OnInit {
 		this.currentActScene = this.actScenes[0];
 	}
 
+	// Feature Checkbox variables //////////////////////////////////////
 	toggleCountSyllables(): void {
 		this.countSyllables = !this.countSyllables;
 	}
@@ -83,6 +82,7 @@ export class AppComponent implements OnInit {
 	toggleHighlight(): void {
 		this.highlight = !this.highlight;
 	}
+	///////////////////////////////////////////////////////////////////
 
 	toPreviousScene(): void {
 		// Only attempt to navigate back a scene if NOT at first scene in first act
@@ -98,7 +98,41 @@ export class AppComponent implements OnInit {
 		}
 	}
 
+	// Currently a naive implementation
 	isVowel(char: string): boolean {
-		return (char == "a") || (char == "e") || (char == "i") || (char == "o") || (char == "u");
+		let c = char.toLowerCase();
+		return (c == "a") || (c == "e") || (c == "i") || (c == "o") || (c == "u");
+	}
+
+	// Currently a naive implementation
+	isConsonant(char: string): boolean {
+		let c = char.toLowerCase();
+		return (c == "b") ||
+			   (c == "c") ||
+			   (c == "d") ||
+			   (c == "f") ||
+			   (c == "g") ||
+			   (c == "h") ||
+			   (c == "j") ||
+			   (c == "k") ||
+			   (c == "l") ||
+			   (c == "m") ||
+			   (c == "n") ||
+			   (c == "p") ||
+			   (c == "q") ||
+			   (c == "r") ||
+			   (c == "s") ||
+			   (c == "t") ||
+			   (c == "v") ||
+			   (c == "w") ||
+			   (c == "x") ||
+			   (c == "y") ||
+			   (c == "z");
+	}
+
+	// Converts numerals from 1-10 into Roman numerals
+	roman(num: number): string {
+		let conversions = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", 6: "VI", 7: "VII", 8: "VIII", 9: "IX", 10: "X"};
+		return conversions[num];
 	}
 }
