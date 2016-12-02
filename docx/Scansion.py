@@ -29,6 +29,7 @@ def stripUnicode(docRunTextUnstripped):
 def endLine(line, fullText, numRuns):
     line['lineText'] = fullText
 
+    '''
     words = fullText.split()
     words = [stripUnicode(word) for word in words]
             
@@ -38,6 +39,7 @@ def endLine(line, fullText, numRuns):
     naiiveCount = sum([naiiveSyllableCount(word) for word in words])
     if abs(naiiveCount - numRuns) > 3:
         numRuns = 0
+    '''
     if len(line['runs']) > 1:
         if line['runs'][0]['bold'] == line['runs'][1]['bold'] and line['runs'][0]['italic'] == line['runs'][1]['italic']:
             numRuns = 0
