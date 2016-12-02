@@ -178,13 +178,20 @@ def parsePlay(playName):
                 # punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
-                if not docRunText is '$' and docRunText in string.punctuation:
-                    fullText += docRunTextUnstripped
-                    continue
-                # Space case
-                if docRunText.isspace():
+                #mid line footnote weirdness
+                #for num in '0123456789'
+                # Double space case
+                if len(runs) > 0 and docRunText.isspace():
                     fullText += docRunTextUnstripped
                     runs[-1]['text'] += docRunText
+                    continue
+                # Single space case
+                if len(runs) > 0 and docRunTextUnstripped.isspace():
+                    fullText += docRunTextUnstripped
+                    runs[-1]['text'] += docRunTextUnstripped
+                    continue
+                if not docRunText is '$' and docRunText in string.punctuation:
+                    fullText += docRunTextUnstripped
                     continue
                 # If there's a $ sign, that was manually inserted by a developer
                 # in the .docx to signify a new line where the pdf to docx converter
@@ -224,6 +231,12 @@ def parsePlay(playName):
                     else: 
                         numRuns += 1
                         runs.append(run)
+                        
+            '''
+            if 'As thou didst leave' in fullText:
+                print lineIterator
+                return
+                '''
             
             lines[-1] = endLine(line, fullText, numRuns)
             numLines += 1
