@@ -114,6 +114,9 @@ def parsePlay(playName):
             numLines = 1
             
         elif len(docRuns) > 1:
+            # footnote catch
+            if docRuns[0].font.size == 101600:
+                continue
             start = 0
             # skip page headers
             if docRuns[1].font.name == 'Bernard MT Condensed':
@@ -240,11 +243,10 @@ def parsePlay(playName):
                         runs.append(run)
                         
             '''
-            if 'As thou didst leave' in fullText:
+            if 'Folio' in fullText:
                 print lineIterator
                 return
-                '''
-            
+            '''
             lines[-1] = endLine(line, fullText, numRuns)
             numLines += 1
         else:
