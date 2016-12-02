@@ -38,6 +38,9 @@ def endLine(line, fullText, numRuns):
     naiiveCount = sum([naiiveSyllableCount(word) for word in words])
     if abs(naiiveCount - numRuns) > 3:
         numRuns = 0
+    if len(line['runs']) > 1:
+        if line['runs'][0]['bold'] == line['runs'][1]['bold'] and line['runs'][0]['italic'] == line['runs'][1]['italic']:
+            numRuns = 0
     line['syllables'] = numRuns - 1
     return line
 
@@ -133,11 +136,6 @@ def parsePlay(playName):
                         character += docRuns[j].text.encode('utf-8')
                     if character[0] is 'I' and character[2] in string.digits:
                         break
-                        '''
-                    if 'I 2' in character:
-                        print lineIterator
-                        return
-                        '''
                     
                     speech = {'speechNumber': numSpeeches}
                     speeches.append(speech)
@@ -186,9 +184,9 @@ def parsePlay(playName):
             
             fullText = ''
             # Write in runs
+            addSpace = False
             for docRun in docRuns[start:]:
                 numInText = False
-                # punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
                 # Double space case
@@ -201,14 +199,19 @@ def parsePlay(playName):
                     fullText += docRunTextUnstripped
                     runs[-1]['text'] += docRunTextUnstripped
                     continue
+                # punctuation case
                 if not docRunText is '$' and docRunText in string.punctuation:
                     fullText += docRunTextUnstripped
+                    if docRunTextUnstripped[-1].isspace():
+                        addSpace = True
                     continue
                 # If there's a $ sign, that was manually inserted by a developer
                 # in the .docx to signify a new line where the pdf to docx converter
                 # failed to recognize
                 if docRunText[0] is '$':
                     lines[-1] = endLine(line, fullText, numRuns)
+                    if lines[-1]['syllables'] == 0:
+                        del lines[-1]
                     numLines += 1
                     
                     line = {lineNumber: numLines}
@@ -236,7 +239,11 @@ def parsePlay(playName):
                     else:
                         run['italic'] = 'false'
                     # Write out the run's text to the json
-                    run['text'] = docRunTextUnstripped
+                    if addSpace:
+                        run['text'] = ' ' + docRunTextUnstripped
+                        addSpace = False
+                    else:
+                        run['text'] = docRunTextUnstripped
                     if len(runs) > 1 and run['bold'] == runs[-1]['bold'] and run['italic'] == runs[-1]['italic']:
                         runs[-1]['text'] += docRunTextUnstripped
                     else: 
