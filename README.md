@@ -33,4 +33,4 @@ When our website loads, our main Angular Component makes a call to load in the j
 5. Then run "npm start". The website should open in a browser.
  1. All of us at some point encountered very frustrating npm errors. Since Angular 2 is just out of Beta (as of Fall 2016), some are harder to resolve than others. Here are two things that seemed to solve many of the problems we were getting:
    1. In package.json, truncate the value of "start" to "concurrently \"npm run tsc:w\" \"npm run lite\" ".
-   2. Change around some of the versioning in package.json
+    2. Change around some of the versioning in package.json
