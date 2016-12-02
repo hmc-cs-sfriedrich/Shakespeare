@@ -176,6 +176,8 @@ def parsePlay(playName):
                     
             # Set up for writing a Line
             line = {lineNumber: numLines}
+            if lines[-1]['syllables'] == 0:
+                del lines[-1]
             lines.append(line)
             
             runs = []
@@ -189,14 +191,6 @@ def parsePlay(playName):
                 # punctuation case
                 docRunTextUnstripped = docRun.text.encode('utf-8')
                 docRunText = docRunTextUnstripped.strip()
-                '''
-                #mid line footnote weirdness
-                for num in string.digits:
-                    if num in docRunText:
-                        numInText = True
-                if numInText:
-                    continue
-                    '''
                 # Double space case
                 if len(runs) > 0 and docRunText.isspace():
                     fullText += docRunTextUnstripped
@@ -241,19 +235,14 @@ def parsePlay(playName):
                     # Unitalicized syllable case
                     else:
                         run['italic'] = 'false'
-                    # Write out the run's text tot he json
+                    # Write out the run's text to the json
                     run['text'] = docRunTextUnstripped
                     if len(runs) > 1 and run['bold'] == runs[-1]['bold'] and run['italic'] == runs[-1]['italic']:
-                        runs[-1]['text'] += str(docRunText)
+                        runs[-1]['text'] += docRunTextUnstripped
                     else: 
                         numRuns += 1
                         runs.append(run)
-                        
-            '''
-            if 'gallowglasses' in fullText:
-                print lineIterator
-                return
-                '''
+                
             lines[-1] = endLine(line, fullText, numRuns)
             numLines += 1
         else:
