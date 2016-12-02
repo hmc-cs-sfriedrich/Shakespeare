@@ -128,12 +128,14 @@ def parsePlay(playName):
             newSpeech = False
             for i in [1,2,3]:
                 if len(docRuns) > i and docRuns[i].text == '\t':
-                    speech = {'speechNumber': numSpeeches}
-                    speeches.append(speech)
-                    
                     character = ''
                     for j in range(i):
                         character += docRuns[j].text.encode('utf-8')
+                    if character[0] is 'I' and character[1] in string.digits:
+                        break
+                    
+                    speech = {'speechNumber': numSpeeches}
+                    speeches.append(speech)
                     speech['character'] = character.strip()
                     
                     newSpeech = True
