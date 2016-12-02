@@ -131,8 +131,13 @@ def parsePlay(playName):
                     character = ''
                     for j in range(i):
                         character += docRuns[j].text.encode('utf-8')
-                    if character[0] is 'I' and character[1] in string.digits:
+                    if character[0] is 'I' and character[2] in string.digits:
                         break
+                        '''
+                    if 'I 2' in character:
+                        print lineIterator
+                        return
+                        '''
                     
                     speech = {'speechNumber': numSpeeches}
                     speeches.append(speech)
