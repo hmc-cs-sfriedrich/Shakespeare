@@ -176,7 +176,7 @@ def parsePlay(playName):
                     
             # Set up for writing a Line
             line = {lineNumber: numLines}
-            if lines[-1]['syllables'] == 0:
+            if len(lines) > 0 and lines[-1]['syllables'] == 0:
                 del lines[-1]
             lines.append(line)
             
