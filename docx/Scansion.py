@@ -250,10 +250,10 @@ def parsePlay(playName):
                         runs.append(run)
                         
             '''
-            if 'Folio' in fullText:
+            if 'gallowglasses' in fullText:
                 print lineIterator
                 return
-            '''
+                '''
             lines[-1] = endLine(line, fullText, numRuns)
             numLines += 1
         else:
