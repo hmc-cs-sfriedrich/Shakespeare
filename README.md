@@ -26,7 +26,7 @@ When our website loads, our main Angular Component makes a call to load in the j
 
 # How to get the project running
 1. Clone this project
-2. Install node (if not already installed)
+2. <a href="https://nodejs.org/en/download/">Install node</a> (if not already installed)
 3. In the highest level project directory, run the command "npm install"
     I. If there are errors, we have found that changing around some of the versioning in package.json may resolve issues.
 4. Then, check to see if the typings/ folder appeared. If not, run "npm run typings install"
