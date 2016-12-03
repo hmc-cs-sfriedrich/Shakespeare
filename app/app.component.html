@@ -113,8 +113,8 @@
 						<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlight()" [disabled]="displayScansion"/>
 						<br>
 						<span *ngIf="highlight">
-							<input class ="radio" type="radio" name="highlight" id="vowels" value="vowels" [(ngModel)]="highlightWhat" checked> <label for="vowels">Vowels</label>
-							<input class ="radio" type="radio" name="highlight" id="consonants" value="consonants" [(ngModel)]="highlightWhat"> <label for="consonants">Consonants</label>
+							<input class ="radio" type="radio" name="highlight" id="vowels" value="vowels" [(ngModel)]="highlightWhat" checked> <label class = "radio-label" for="vowels">Vowels</label>
+							<input class ="radio" type="radio" name="highlight" id="consonants" value="consonants" [(ngModel)]="highlightWhat"> <label class = "radio-label" for="consonants">Consonants</label>
 						</span>
 					</div>
 				</div>
