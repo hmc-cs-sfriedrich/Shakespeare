@@ -240,7 +240,7 @@ p, b {
   width: 100%;
 }
 
-.feature-checkbox-label, .radio {
+.toggle-feature, .radio-label {
   margin-left: 13px;
   width: 100%;
   line-height:45px;
