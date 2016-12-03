@@ -177,7 +177,7 @@ p, b {
   transition: 0.5s;
 }
 
-#dropdown-menu
+.dropdown-menu
 {
   border-radius: 2px;
   width: 170px;
@@ -192,7 +192,7 @@ p, b {
   transition: 0.5s;
 }
 
-#dropdown-menu select{
+.dropdown-menu select{
   background: transparent;
    width: fit-content;
    height:40px;
@@ -207,7 +207,16 @@ p, b {
    margin-right: -10%;
 }
 
-#dropdown-menu:hover, #dropdown-menu:active
+.dropdown-menu #play-dropdown-select {
+    height: 60px;
+    font-size: 30px;
+}
+
+#play-dropdown {
+     margin-bottom: 30px;  
+}
+
+.dropdown-menu:hover, .dropdown-menu:active
 {
   color: white;
   border-radius: 20px;
@@ -217,12 +226,12 @@ p, b {
   transition: 0.6s;
 }
 
-#dropdown-menu select:focus {
+.dropdown-menu select:focus {
     outline: none;
     transition: 0.5s
 }
 
- #dropdown-menu select:hover{
+ .dropdown-menu select:hover{
    margin-right: 10%;
    transition: 0.5s;
  }

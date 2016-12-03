@@ -1,15 +1,15 @@
 <body>
 	<!-- The play dropdown-->
-	<div id = "play-dropdown-div">
-		<label id="plays" for="play-dropdown"> </label>
-		<select [(ngModel)]="currentPlay" id="play-dropdown" (ngModelChange)="loadNewPlay()">
+	<div class = "dropdown-menu" id = "play-dropdown">
+		<label id="plays" for="play-dropdown-select"> </label>
+		<select [(ngModel)]="currentPlay" id="play-dropdown-select" (ngModelChange)="loadNewPlay()">
 			<option *ngFor = "let play of plays" [ngValue]="play">
 				{{play.title}}
 			</option>
 		</select>
 	</div>
 
-	<h1> {{currentPlay.title}} </h1>
+	<!--<h1> {{currentPlay.title}} </h1>-->
 	
 	<!-- Even though we don't use the loop variable p, this loop is oddly
 		 necessary in order to read through play[0].play... Not doing so yields errors-->
@@ -83,7 +83,7 @@
 						<input type="button" value="<" (click)="toPreviousScene()" />
 					</div>
 					<!-- Scene dropdown -->
-					<div id = "dropdown-menu">
+					<div class = "dropdown-menu">
 						<label id="features" for="dropdown"> </label>
 						<select [(ngModel)]="currentActScene" id="dropdown" required>
 							<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
