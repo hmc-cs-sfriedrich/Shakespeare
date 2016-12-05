@@ -1,63 +1,126 @@
-
 <body>
-	<h1> A SHAKESPEARE WEBSITE </h1>
-	<div id = "reader">
-		<h2> Act {{sceneToDisplay.actNumber}} Scene {{sceneToDisplay.sceneNumber}}</h2>
-		<div id = "characters">
-			<p id = "characters-speech">
-				<span *ngFor="let line of sceneToDisplay.lines">
-					<b id = "character" *ngIf = "line.character != prevCharacter"> {{line.character}}</b>
-					<br>
-				</span>
-			</p>
-		</div>
-		<div id = "text">
-			<p id = "scene-text">
-				<span *ngFor="let line of sceneToDisplay.lines">
-					{{line.words}}
-					<br>
-				</span>
-			</p>
-		</div>
-		<div id = "syllable-count">
-			<p id = "syllable-text">
-				<span *ngFor="let line of sceneToDisplay.lines">
-					<b id = "syllables" *ngIf = countSyllables> {{line.syllableCount}} </b> 
-					<br>
-				</span>
-			</p>
-		</div>
-		<div id = "line-numbers">
-			<p id = "line-number-text">
-				<span *ngFor="let line of sceneToDisplay.lines">
-					<b *ngIf = "line.lineNumber % 5 == 0"> {{line.lineNumber}} </b>
-					<br>
-				</span>
-			</p>
-		</div>
+	<!-- The play dropdown-->
+	<div class = "dropdown-menu" id = "play-dropdown">
+		<label id="plays" for="play-dropdown-select"> </label>
+		<select [(ngModel)]="currentPlay" id="play-dropdown-select" (ngModelChange)="loadNewPlay()">
+			<option *ngFor = "let play of plays" [ngValue]="play">
+				{{play.title}}
+			</option>
+		</select>
 	</div>
+
+	<!--<h1> {{currentPlay.title}} </h1>-->
 	
-	
-	<div id = "box">
-		<div id = "navigation">
-			<div id = "nav-button-1">
-				<form><input type="button" value="Previous" (click)="toPreviousScene()" /></form>
+	<!-- Even though we don't use the loop variable p, this loop is oddly
+		 necessary in order to read through play[0].play... Not doing so yields errors-->
+	<span *ngFor="let p of play">
+		<div id = "reader">
+			<h2> Act {{roman(currentActScene.act)}} Scene {{roman(currentActScene.scene)}}</h2>
+			<!--We list each character who speaks in this div-->
+			<div id = "characters">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+					<p id = "character">{{speech.character}}</p>
+					<!--Insert a line-break for every line of speech (minus 1 because the character name takes up a line) for correct spacing-->
+					<span *ngFor="let line of speech.lines; let i = index">
+						<template [ngIf]="i>0">
+							<p><br></p>
+						</template>
+					</span>
+				</span>
+				<p><br></p>
 			</div>
-			<div id = "dropdown-menu">
-				<label id="features" for="dropdown"> </label>
-				<select [(ngModel)]="sceneToDisplay" ngChange="update(scene)" id="dropdown" required>
-					<option *ngFor = "let scene of scenes" [ngValue]="scene">
-						Act {{scene.actNumber}}, Scene {{scene.sceneNumber}}
-					</option>
-				</select>
+			<!--This is where all the scene's text is displayed-->
+			<div id = "text">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+						<span *ngFor="let line of speech.lines">
+							<p>
+								<!-- Comment tags necessary to eliminate whitespace when displaying -->
+								<span *ngFor="let run of line.runs"><!--
+									--><span *ngIf="!displayScansion && !highlight">{{run.text}}</span><!--
+									--><span *ngIf="displayScansion"><!--
+										--><span *ngIf="run.bold === 'true'"><b>{{run.text}}</b></span><!--
+										--><span id = "unstressed" class = "fadeout" *ngIf="run.bold === 'false'">{{run.text}}</span><!--
+									--></span><!--
+									--><span *ngIf="highlight"><!--
+										--><span *ngFor="let char of run.text | runChars"><!--
+											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (isConsonant(char) && highlightWhat == 'consonants')"><b>{{char}}</b></span><!--
+											--><span id = "unhighlighted" class = "fadeout" *ngIf="(isConsonant(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')">{{char}}</span><!--
+											--><span id = "not-letter" class = "fadeout" *ngIf="(!isVowel(char) && !isConsonant(char))">{{char}}</span><!--
+									   --></span><!--
+									--></span><!--
+								--></span>
+							</p>
+						</span>
+				</span>
 			</div>
-			<div id = "nav-button-2">
-				<form name = "hello"><input type="button" value="Next" (click)="toNextScene()" /></form>
+			<!--We display syllable counts for each line only if countSyllables is checked-->
+			<div id = "syllable-count">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+					<p id = "syllable-text">
+						<span *ngFor="let line of speech.lines">
+							<b id = "syllable-text" *ngIf = "countSyllables && line.syllables != -1"> {{line.syllables}} </b> 
+							<br>
+						</span>
+					</p>
+				</span>
 			</div>
+			<!--We always display the line number for each line-->
+			<div id = "line-numbers">
+				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
+						<p id = "line-number-text">
+							<span *ngFor="let line of speech.lines">
+								{{line.lineNumber}}
+								<br>
+							</span>
+						</p>
+				</span>
+			</div>
+			<!--This div contains all navigation options and analysis features-->
+			<div id = "box">
+				<div id = "navigation">
+					<!-- Previous scene -->
+					<div id = "previous" class = "nav-buttons">
+						<input type="button" value="<" (click)="toPreviousScene()" />
+					</div>
+					<!-- Scene dropdown -->
+					<div class = "dropdown-menu">
+						<label id="features" for="dropdown"> </label>
+						<select [(ngModel)]="currentActScene" id="dropdown" required>
+							<option *ngFor = "let actScene of actScenes" [ngValue]="actScene">
+								Act {{roman(actScene.act)}}, Scene {{roman(actScene.scene)}}
+							</option>
+						</select>
+					</div>
+					<!-- Next scene -->
+					<div id = "forward" class = "nav-buttons">
+						<input type="button" value=">" (click)="toNextScene()" />
+					</div>
+				</div>
+				<div id = "checkboxes">
+					<!-- Count syllables -->
+					<div class = "toggle-feature">
+						<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
+						<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
+					</div>
+					<!-- Display Scansion -->
+					<div class = "toggle-feature">
+						<label for = "display-scansion" class = "feature-checkbox-label">Display Scansion</label>
+						<input type = "checkbox" id = "display-scansion" (click)="toggleDisplayScansion()" [disabled]="highlight"/>
+					</div>
+					<!-- Highlight vowels/consonants -->
+					<div class = "toggle-feature">
+						<label for = "highlight-vowels" class = "feature-checkbox-label">Highlight Vowels/Consonants</label>
+						<input type = "checkbox" id = "highlight-vowels" (click)="toggleHighlight()" [disabled]="displayScansion"/>
+						<br>
+						<span *ngIf="highlight">
+							<input class ="radio" type="radio" name="highlight" id="vowels" value="vowels" [(ngModel)]="highlightWhat" checked> <label class = "radio-label" for="vowels">Vowels</label>
+							<input class ="radio" type="radio" name="highlight" id="consonants" value="consonants" [(ngModel)]="highlightWhat"> <label class = "radio-label" for="consonants">Consonants</label>
+						</span>
+					</div>
+				</div>
+				<!-- Displays amount user has scrolled within scene -->
+				<progress id="progressbar" value="0" max="100"></progress>
+			</div>		
 		</div>
-		<div id = "checkbox">
-			<label for = "count-syllables" class = "feature-checkbox-label">Count Syllables</label>
-			<input type = "checkbox" id = "count-syllables" (click)="toggleCountSyllables()"/>
-		</div>
-	</div>
+	</span>
 </body>

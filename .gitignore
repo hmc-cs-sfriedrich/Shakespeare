@@ -3,12 +3,24 @@ node_modules/
 
 
 # Ignore generated .js and .map files
-app/*.js
-app/*.map
+/app/*.js
+/app/*.map
+/app/objects/*.js
 
-*.json
-=======
+/demo/app/*.js
+/demo/app/*.map
+
+/demo/app/toh/*.js
+/demo/app/toh/*.map
+
+package.json
+tsconfig.json
+typings.json
+
 typings/
 
 # Debugging
+npm-debug.log.*
 npm-debug.log
+
+/venv/

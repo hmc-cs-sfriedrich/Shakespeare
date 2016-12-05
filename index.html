@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <base href="/">
@@ -6,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
     <!-- 1. Load libraries -->
+     <!-- Load jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
      <!-- Polyfill(s) for older browsers -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/zone.js/dist/zone.js"></script>
@@ -17,7 +20,10 @@
       System.import('app').catch(function(err){ console.error(err); });
     </script>
     <!-- 3. Load styles -->
-    <link href="https://fonts.googleapis.com/css?family=Fjalla+One|Crimson+Text" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One|Crimson+Text|Nunito:300" rel="stylesheet">
+    <!-- 4. Load JavaScript scripts for animations 
+    <script src="app/progress-bar.js"></script>-->
+    <script src="scripts/scroll.js"></script>
   </head>
   <!-- 4. Display the application -->
   <body>
