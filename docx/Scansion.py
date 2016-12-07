@@ -27,22 +27,14 @@ def stripUnicode(docRunTextUnstripped):
     return docRunTextUnstripped
     
 def endLine(line, fullText, numRuns):
+    #TODO: SIMON COMMENT HERE WHAT THIS FUNCTION DOES
     line['lineText'] = fullText
 
-    '''
-    words = fullText.split()
-    words = [stripUnicode(word) for word in words]
-            
-    # If the naiive count isn't close enough to the number of runs
-    # it means that it was prose, which is indicated as having
-    # syllable count of -1
-    naiiveCount = sum([naiiveSyllableCount(word) for word in words])
-    if abs(naiiveCount - numRuns) > 3:
-        numRuns = 0
-    '''
     if len(line['runs']) > 1:
         if line['runs'][0]['bold'] == line['runs'][1]['bold'] and line['runs'][0]['italic'] == line['runs'][1]['italic']:
             numRuns = 0
+    if len(line['runs']) is 0:
+        numRuns = 0
     line['syllables'] = numRuns - 1
     return line
 
@@ -89,6 +81,7 @@ def parsePlay(playName):
     play['title'] = title
     play ['acts'] = acts
     
+    #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES
     for lineIterator in range(firstLine, len(doc.paragraphs)):
         docRuns = doc.paragraphs[lineIterator].runs
         if len(docRuns) == 0:
@@ -117,7 +110,8 @@ def parsePlay(playName):
             numScenes += 1
             numSpeeches = 1
             numLines = 1
-            
+
+        #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES
         elif len(docRuns) > 1:
             # footnote catch
             if docRuns[0].font.size == 101600:
@@ -162,6 +156,7 @@ def parsePlay(playName):
             elif docRuns[0].italic and (docRuns[1].italic or isOneCapLetter(docRuns[1].text)):
                 continue
             # Middle of a speech
+            #TODO: SIMON COMMENT HERE, what is middle of a speech exactly?
             else:
                 start = 0
                 # Other new speech option
@@ -187,6 +182,8 @@ def parsePlay(playName):
             fullText = ''
             # Write in runs
             addSpace = False
+
+            #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES (what exactly is 'write in runs'?)
             for docRun in docRuns[start:]:
                 numInText = False
                 docRunTextUnstripped = docRun.text.encode('utf-8')
@@ -225,6 +222,8 @@ def parsePlay(playName):
                     docRunTextUnstripped = docRunTextUnstripped[1:]
                     docRunText = docRunTextUnstripped.strip()
                     fullText = ''
+
+                #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES
                 if len(docRunText) > 0 and not docRunText.isdigit() and not(docRun.italic and not docRun.bold) and not docRunText is '$': 
                     fullText += docRunTextUnstripped
                     run = {runNumber: numRuns}
