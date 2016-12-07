@@ -8,8 +8,6 @@
 			</option>
 		</select>
 	</div>
-
-	<!--<h1> {{currentPlay.title}} </h1>-->
 	
 	<!-- Even though we don't use the loop variable p, this loop is oddly
 		 necessary in order to read through play[0].play... Not doing so yields errors-->
@@ -38,12 +36,12 @@
 								<span *ngFor="let run of line.runs"><!--
 									--><span *ngIf="!displayScansion && !highlight">{{run.text}}</span><!--
 									--><span *ngIf="displayScansion"><!--
-										--><span *ngIf="run.bold === 'true'"><b>{{run.text}}</b></span><!--
+										--><span id = "stressed" *ngIf="run.bold === 'true'">{{run.text}}</span><!--
 										--><span id = "unstressed" class = "fadeout" *ngIf="run.bold === 'false'">{{run.text}}</span><!--
 									--></span><!--
 									--><span *ngIf="highlight"><!--
 										--><span *ngFor="let char of run.text | runChars"><!--
-											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (isConsonant(char) && highlightWhat == 'consonants')"><b>{{char}}</b></span><!--
+											--><span *ngIf="(isVowel(char) && highlightWhat == 'vowels') || (isConsonant(char) && highlightWhat == 'consonants')" id="highlighted">{{char}}</span><!--
 											--><span id = "unhighlighted" class = "fadeout" *ngIf="(isConsonant(char) && highlightWhat == 'vowels') || (isVowel(char) && highlightWhat == 'consonants')">{{char}}</span><!--
 											--><span id = "not-letter" class = "fadeout" *ngIf="(!isVowel(char) && !isConsonant(char))">{{char}}</span><!--
 									   --></span><!--
@@ -58,8 +56,9 @@
 				<span *ngFor="let speech of play[0].play.acts[currentActScene.act - 1].scenes[currentActScene.scene - 1].speeches">
 					<p id = "syllable-text">
 						<span *ngFor="let line of speech.lines">
-							<b id = "syllable-text" *ngIf = "countSyllables && line.syllables != -1"> {{line.syllables}} </b> 
-							<br>
+								<span class = "syllable-text" id = "syllable-text-ten" *ngIf = "countSyllables && line.syllables == 10"> {{line.syllables}} </span>
+								<span class = "syllable-text" id = "syllable-text-not-ten" *ngIf = "countSyllables && line.syllables != -1 && line.syllables != 10"> {{line.syllables}} </span>
+								<br>
 						</span>
 					</p>
 				</span>

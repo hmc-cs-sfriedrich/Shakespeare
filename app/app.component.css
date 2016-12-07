@@ -92,8 +92,7 @@ p, b {
   margin-left: 20%;
 }
 
-#syllable-text{
-  font-weight: bold;
+.syllable-text{
   color: firebrick;
   margin-left: 20%;
   -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
@@ -101,6 +100,14 @@ p, b {
         -ms-animation: fadein 2s; /* Internet Explorer */
          -o-animation: fadein 2s; /* Opera < 12.1 */
             animation: fadein 2s;
+}
+
+#syllable-text-ten {
+
+}
+
+#syllable-text-not-ten {
+  font-weight: bold;
 }
 
 /* The feature div pane */
@@ -303,6 +310,10 @@ p, b {
   -ms-animation:fadeout 2s;
   -o-animation:fadeout 2s;
   animation:fadeout 2s;
+}
+
+#highlighted, #stressed {
+  font-weight: bold;
 }
 
 #unstressed {
