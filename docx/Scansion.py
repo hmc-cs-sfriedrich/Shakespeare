@@ -9,28 +9,27 @@ speechNumber = 'speechNumber'
 sceneNumber = 'sceneNumber'
 actNumber = 'actNumber'
 
+'''
+Returns true if the input string is a single capital character
+'''
 def isOneCapLetter(string):
     return len(string) == 1 and string[0].isupper()
-    
-def naiiveSyllableCount(word):
-    return len(''.join(" x"[c in "aeiouy"] for c in word.rstrip('e')).split())
-    
+
+'''
+Formating function for file naming
+'''    
 def titleForSave(title):
     return '-'.join(title.split()).lower()
-    
-def stripUnicode(docRunTextUnstripped):
-    docRunTextUnstripped = docRunTextUnstripped.decode('utf-8').replace(u'\u2019', "'")
-    docRunTextUnstripped = docRunTextUnstripped.replace(u'\u2014','')
-    docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201c','"')
-    docRunTextUnstripped = docRunTextUnstripped.replace(u'\u201d','"')
-    docRunTextUnstripped = docRunTextUnstripped.encode('utf-8')
-    return docRunTextUnstripped
-    
+
+'''
+Function call that closes the part of the dictionary structure for a line.
+This includes determining whether the line is prose or not
+'''
 def endLine(line, fullText, numRuns):
-    #TODO: SIMON COMMENT HERE WHAT THIS FUNCTION DOES
     line['lineText'] = fullText
 
     if len(line['runs']) > 1:
+        # Below is the check that would determine that the line is prose
         if line['runs'][0]['bold'] == line['runs'][1]['bold'] and line['runs'][0]['italic'] == line['runs'][1]['italic']:
             numRuns = 0
     if len(line['runs']) is 0:
@@ -38,7 +37,9 @@ def endLine(line, fullText, numRuns):
     line['syllables'] = numRuns - 1
     return line
 
-
+'''
+Main script that turns a play into a json
+'''
 def parsePlay(playName):
     doc = docx.Document(playName)
     
@@ -81,7 +82,10 @@ def parsePlay(playName):
     play['title'] = title
     play ['acts'] = acts
     
-    #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES
+    # Starting from the beginning of the play, this iterates through the entire play and translate the docx into 
+    # the json. There are different cases such as a case for if a 'paragraph' (referring to the docx library paragrpah)
+    # is an act, a scene, a new speech, or the continuation of a current speech, as well as different edge cases which
+    # should not be part of the json such as stage directions.
     for lineIterator in range(firstLine, len(doc.paragraphs)):
         docRuns = doc.paragraphs[lineIterator].runs
         if len(docRuns) == 0:
@@ -111,7 +115,7 @@ def parsePlay(playName):
             numSpeeches = 1
             numLines = 1
 
-        #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES
+        # Cases that are not new act or new scene
         elif len(docRuns) > 1:
             # footnote catch
             if docRuns[0].font.size == 101600:
@@ -155,8 +159,7 @@ def parsePlay(playName):
             # Stage directions case
             elif docRuns[0].italic and (docRuns[1].italic or isOneCapLetter(docRuns[1].text)):
                 continue
-            # Middle of a speech
-            #TODO: SIMON COMMENT HERE, what is middle of a speech exactly?
+            # Middle of a speech, meaning that the same character is speaking
             else:
                 start = 0
                 # Other new speech option
@@ -183,7 +186,7 @@ def parsePlay(playName):
             # Write in runs
             addSpace = False
 
-            #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES (what exactly is 'write in runs'?)
+            # Generate the list of runs that make up a line in the JSON
             for docRun in docRuns[start:]:
                 numInText = False
                 docRunTextUnstripped = docRun.text.encode('utf-8')
@@ -223,7 +226,7 @@ def parsePlay(playName):
                     docRunText = docRunTextUnstripped.strip()
                     fullText = ''
 
-                #TODO: SIMON COMMENT HERE WHAT THIS BIG CHUNK DOES
+                # This is the case for which a run is actually made up of words that are part of the actual character's line
                 if len(docRunText) > 0 and not docRunText.isdigit() and not(docRun.italic and not docRun.bold) and not docRunText is '$': 
                     fullText += docRunTextUnstripped
                     run = {runNumber: numRuns}
