@@ -7,7 +7,8 @@
     "postinstall": "typings install",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "typings": "typings"
+    "typings": "typings",
+    "deploy": "node_modules/.bin/deploy-gh-pages"
   },
   "license": "ISC",
   "dependencies": {
@@ -31,8 +32,9 @@
   },
   "devDependencies": {
     "concurrently": "^2.2.0",
+    "deploy-gh-pages": "1.0.0",
     "lite-server": "^2.2.2",
     "typescript": "^2.0.2",
-    "typings":"^1.3.2"
+    "typings": "^1.3.2"
   }
 }
