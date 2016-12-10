@@ -1,3 +1,7 @@
+'''
+In command line in the directory of this file run "py Scansion.py". If you get errors about one of the libraries not being found,
+make sure to install those libraries using pip or easy-install.
+'''
 import docx
 import json
 import os
