@@ -29,7 +29,11 @@ Then, we wrote a python script using the python-docx library to format the text,
 
 When our website loads, our main Angular Component makes a call to load in the json for the selected play (by default it loads Macbeth). We then iterate through the currently selected act and scene (by default, it's Act I, Scene I) to display the text and associated data.
 
-
+# Future Work
+Some possibilities for future work include:
+ * Shakespearean word definitions (See Alexander Schmidt's <a href="http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.03.0079">Shakespeare Lexicon</a>)
+ * IPA markup
+ * Place of articulation
 
 # How to get the project running
 1. Clone this project
